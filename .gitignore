@@ -30,3 +30,4 @@ assembler/Debug/assembler.tlog/CL.command.1.tlog
 assembler/Debug/assembler.tlog/unsuccessfulbuild
 assembler/Debug/vc142.idb
 assembler/Debug/vc142.pdb
+*.db
