@@ -1,27 +1,38 @@
 #include <iostream>
 
 int main(){
-    float x1, x2, tol, it, y1, ys, resultado; // 4 bytes //
+    unsigned int x1, x2;
+    float tol, it, y1, ys, resultado, resul; // 4 bytes //
     std::cout << "X1\n";
     std::cin >> x1;
-    std::cout << "X2\n";
+    /*std::cout << "X2\n";
     std::cin >> x2;
     std::cout << "Tolerancia\n";
     std::cin >> tol;
     std::cout << "Iteraciones\n";
-    std::cin >> it;
-
+    std::cin >> it;*/
+    float e = exp(1);
+    resul = 1;
     _asm {
-        mov eax, x1
-        finit; comienza el coprocesador
-        fld eax
-
-        cmp y1, 0; if (y1 - 0...)
-        jnz fin_si; si y1 != 0 vaya a fin_si
-        mov eax, x1
-        mov resultado, eax; resultado = x1
+        mov ecx, x1
         
-    }
+        exponente:              ; while (ecx > 0)
+            cmp ecx, 0          ; if (ecx <= 0)
+            jle fin_exponente   ; then break while
+            dec ecx
 
-    std::cout << "El resultado es: " << resultado;
+            finit
+            fld e               ; se ingresa e
+            fld resul           ; se ingresa el resultado anterior || 1
+            fmul                ; se multiplican
+            fstp resul          ; se guarda en resul
+
+            jmp exponente       ; redo
+        fin_exponente :
+
+        mov ebx, resul
+        mov y1, ebx
+    }
+    std::cout << "Valor real:    " << exp(x1) << '\n';
+    std::cout << "Tiene raiz en: " << y1;
 }

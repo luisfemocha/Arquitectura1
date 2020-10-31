@@ -1,0 +1,4 @@
+C:\Users\luisf\Documents\.UNAL\Arquitectura\Arquitectura1\assembler\Debug\assembler.exe
+C:\Users\luisf\Documents\.UNAL\Arquitectura\Arquitectura1\assembler\Debug\assembler.pdb
+C:\Users\luisf\Documents\.UNAL\Arquitectura\propios\Arquitectura1\assembler\Debug\assembler.exe
+C:\Users\luisf\Documents\.UNAL\Arquitectura\propios\Arquitectura1\assembler\Debug\assembler.pdb
