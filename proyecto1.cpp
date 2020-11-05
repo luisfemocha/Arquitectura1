@@ -5,7 +5,7 @@
 
 int main(){
     unsigned int x1, x2;
-    float tol, it, y1, ys, resultado, resul; // 4 bytes //
+    float tol, it, y1, ys; // 4 bytes //
     std::cout << "X1: ";
     std::cin >> x1;
     /*std::cout << "X2: ";
@@ -14,10 +14,11 @@ int main(){
     std::cin >> tol;
     std::cout << "Iteraciones: ";
     std::cin >> it;*/
+
     float e = exp(1);
-    resul = 1;
     _asm {
         mov ecx, x1
+        mov resul, 1
 
         exponente :             ; while (ecx > 0)
             cmp ecx, 0          ; if (ecx <= 0)
@@ -33,8 +34,9 @@ int main(){
             jmp exponente       ; redo
         fin_exponente :         ; end while
 
-        mov ebx, resul
-        mov y1, ebx
+        ; resul ahora contiene e^x
+        
+
     }
     std::cout << "Valor real:    " << exp(x1) << '\n';
     std::cout << "Tiene raiz en: " << y1;
