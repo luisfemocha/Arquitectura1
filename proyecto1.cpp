@@ -6,13 +6,12 @@ int main(){
     std::cin >> x1;
     std::cout << "Xs: ";
     std::cin >> xs;
-    std::cout << "Tolerancia\n";
+    std::cout << "Tolerancia: ";
     std::cin >> tol;
-    std::cout << "Iteraciones\n";
+    std::cout << "Iteraciones: ";
     std::cin >> it;
 
     float aux, aux2, aux3=2, xm, ym, ys, e;
-    float resultado= NULL;
     int x;
     // 0.2699 es la unica raiz que tiene en los reales
     _asm { 
@@ -46,10 +45,7 @@ int main(){
             cmp ecx, 1              
             jl retFunc1             ; para volver la primera vez que se hace la funcion
             jz retFunc2             ; para volver la segunda vez que se hace la funcion
-
-            cmp ecx, 2
-            jz retFunc3             ; para volver la enesima vez que se hace la funcion
-            jg retFunc4             ; para volver a la ultima vez que se hace la funcion (switch case x==2 => se sale del while por tolerancia)
+            jg retFunc3             ; para volver la enesima vez que se hace la funcion          
 
             ; ACA TERMINA LA FUNCION e^x + ln(x), lo demas es parte del main
 
@@ -64,9 +60,13 @@ int main(){
             mov eax, tol
             cmp aux2, eax           ; if ( |y1| <= tolerancia) //la resta debe dar menor que 0, lo que se busca encontrar es si y1=0 o si esta aproximado a 0 respetando la tolerancia.
             jg finComp1
+            
+            mov eax, 1
+            mov x, eax              ; switch case x==1 => TIENE RAIZ EN XM
             mov eax, x1             
-            mov resultado, eax      ; resultado = x1
+            mov xm, eax             ; xm = x1
             jmp terminarCodigo      ; return
+
             finComp1:               ; else continue
             mov eax, xs
             mov aux, eax            ; aux = xs
@@ -84,9 +84,11 @@ int main(){
             mov eax, tol
             cmp ys, eax             ; if (ys  <= tol) // la resta debe ser menor o igual a 0
             jg finComp2
-            mov eax, xs
-            mov resultado, eax      ; resultado = xs
+
+            mov eax, 4
+            mov x, eax              ; switch case x==4 => NO TIENE RAIZ EN EL INTERVALO DADO.
             jmp terminarCodigo      ; return
+
             finComp2:               ; else continue
             
             finit
@@ -97,7 +99,10 @@ int main(){
             cmp aux, 0              ; if (y1*ys < 0) siga con el codigo
             jl finComp3             ; else no tiene raiz entonces termine el codigo.
             
-            jmp terminarCodigo
+            mov eax, 4
+            mov x, eax; switch case x == 4 = > NO TIENE RAIZ EN EL INTERVALO DADO.
+            jmp terminarCodigo; return
+
             finComp3:
 
             inc ecx                 ; ecx++ para calcular ym
@@ -163,7 +168,7 @@ int main(){
             finComp6:               ; fin del if tolerancia
 
             dec it                  ; it--
-            cmp it, 0               ; if (it - 0)
+            cmp it, 1               ; if (it - 1)
             jg mientras1            ; if (it > 0 ) : redo
             jz finMientras3         ; if (it == 0) se terminan las iteraciones, se sale del while y se captura en el fin3
             
@@ -173,32 +178,11 @@ int main(){
         mov eax, 1
         mov x, eax                  ; switch case x==1, tiene raiz.
 
-        mov eax, ym
-        mov resultado, eax          ; resultado = ym
-
         jmp terminarCodigo
 
     finMientras2:                   ; cuando e<tol
         mov eax, 2
         mov x, eax                  ; switch case x==2, tiene raiz con error.
-
-        inc ecx                     ; ecx++ para que vuelva la funcion a este punto.
-        
-        finit
-        fld x1
-        fld xs
-        fadd
-        fld aux3
-        fdiv
-        fstp xm                     ; xm = (x1 + xs) / 2 PUNTO MEDIO
-
-        mov eax, xm
-        mov aux, eax                ; aux = xm
-        jmp funcion                 ; se busca y en el punto medio.
-
-        retFunc4:                   ; se pone un breakpoint para volver al realizar la funcion para calcular ym
-        mov eax, aux
-        mov resultado, eax          ; ym = f(xm) < -y en el punto medio.
 
         jmp terminarCodigo
 
@@ -208,32 +192,25 @@ int main(){
 
         terminarCodigo:
     }
-    std::cout << "Y1: " << y1 << '\n';
-    std::cout << "Ys: " << ys << '\n';
-    if (resultado == NULL) std::cout << "No hay raices.";
-    
-    
-    
-    else {
-        switch (x) {
-            case 1: // x==1 tiene raiz
-                std::cout << "tiene raiz en: " << resultado << '\n';
-                break;
 
-            case 2: // x==2 tiene raiz en tal pero por tolerancia
-                std::cout << "tiene raiz en: " << xm << '\n';
-                std::cout << "con un error de: " << e << '\n';
-                std::cout << "ym: " << ym << '\n';
-                break;
+    switch (x) {
+        case 1: // x==1 tiene raiz
+            std::cout << "tiene raiz en: " << xm << '\n';
+            break;
 
-            case 3:// x==3 no tiene raiz y se salio por la cantidad de iteraciones.
-                std::cout << "No se encontro raiz con la cantidad de iteraciones y tolerancia.";
-                break;
+        case 2: // x==2 tiene raiz en tal pero por tolerancia
+            std::cout << "tiene raiz en: " << xm << '\n';
+            std::cout << "con un error de: " << e << '\n';
+            std::cout << "ym: " << ym << '\n';
+            break;
 
-            default:
-                std::cout << "No hay una raiz entre el intervalo dado. [x1,xs]";
-                break;
-        }
+        case 3:// x==3 no tiene raiz y se salio por la cantidad de iteraciones.
+            std::cout << "No se encontro raiz con la cantidad de iteraciones y tolerancia.";
+            break;
+
+        default:
+            std::cout << "No hay una raiz entre el intervalo dado. [x1,xs]";
+            break;
     }
 }
 
