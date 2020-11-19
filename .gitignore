@@ -1,1 +1,21 @@
 
+.vs/
+Debug\
+*.log
+Debug/proyecto1.exe
+Debug/proyecto1.exe.recipe
+Debug/proyecto1.ilk
+Debug/proyecto1.obj
+Debug/proyecto1.pdb
+Debug/proyecto1.tlog/CL.command.1.tlog
+Debug/proyecto1.tlog/CL.read.1.tlog
+Debug/proyecto1.tlog/CL.write.1.tlog
+Debug/proyecto1.tlog/link.command.1.tlog
+Debug/proyecto1.tlog/link.read.1.tlog
+Debug/proyecto1.tlog/link.write.1.tlog
+Debug/proyecto1.tlog/proyecto1.lastbuildstate
+Debug/proyecto1.vcxproj.FileListAbsolute.txt
+Debug/vc142.idb
+Debug/vc142.pdb
+.vs/proyecto1/v16/.suo
+.vs/proyecto1/v16/Browse.VC.db
