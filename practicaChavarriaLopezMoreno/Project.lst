@@ -1,11 +1,12 @@
-Microsoft (R) Macro Assembler Version 14.28.29333.0	    11/18/20 22:11:36
+Microsoft (R) Macro Assembler Version 14.28.29333.0	    11/28/20 16:07:16
 <ChavarriaLopezMoreno-Arquitectura2020II         (practica.a  Page 1 - 1
 
 
 				TITLE ChavarriaLopezMoreno-Arquitectura2020II         (practica.asm)
 
-				; This program adds and subtracts 32-bit integers
-				; and stores the sum in a variable.
+				; Realizado por: Luis Felipe Moreno Chamorro - Diego Andrés Chavarría Riaño - Jose Fernando Lopez Ramírez
+				; Asignatura: Arquitectura del computador
+				; Semestre: 2020-2s
 
 				INCLUDE Irvine32.inc
 			      C ; Include file for Irvine32.lib             (Irvine32.inc)
@@ -25,9 +26,10 @@ Microsoft (R) Macro Assembler Version 14.28.29333.0	    11/18/20 22:11:36
 			      C .NOLIST
 			      C .LIST
 			      C 
-				.STACK
+
  00000000			.data
- 00000000 48 6F 6C 61 0D		MSN byte "Hola", 0dh,0ah,
+
+ 00000000 48 6F 6C 61 0D		MSN_SALUDO byte "Hola", 0dh,0ah,
 	   0A 45 73 74 65
 	   20 70 72 6F 79
 	   65 63 74 6F 20
@@ -109,29 +111,524 @@ Microsoft (R) Macro Assembler Version 14.28.29333.0	    11/18/20 22:11:36
 	   20 70 61 72 61
 	   20 65 73 74 61
 	   0D 0A 0D 0A 0D
-	   0A
+	   0A 00
 					"Este proyecto ha sido realizado por: Luis Felipe Moreno Chamorro - Diego Andres Chavarria Riano - Jose Fernando Lopez Ramirez", 0dh,0ah,
 						"Asignatura: Arquitectura del computador", 0dh,0ah,
 						"Semestre: 2020-2s",0dh,0ah,
 						"El objetivo de este programa es clasificar las circunferencias a partir de unos datos (coordenadas) solicitadas al usuario, que en caso de corresponder a determinada clasificacion se daran valores eetra para esta",0dh,0ah,
-						0dh,0ah, 0dh,0ah
+						0dh,0ah, 0dh,0ah,0
 
- 0000019B 00000000			XI real4 0.0
+ 0000019C 69 6E 67 72 65		MSN1 byte "ingrese Valor XI", 0dh, 0ah, 0
+	   73 65 20 56 61
+	   6C 6F 72 20 58
+	   49 0D 0A 00
+ 000001AF 69 6E 67 72 65		MSN2 byte "ingrese Valor YI", 0dh, 0ah, 0
+	   73 65 20 56 61
+	   6C 6F 72 20 59
+	   49 0D 0A 00
+ 000001C2 69 6E 67 72 65		MSN3 byte "ingrese Valor RI", 0dh, 0ah, 0
+	   73 65 20 56 61
+	   6C 6F 72 20 52
+	   49 0D 0A 00
+ 000001D5 69 6E 67 72 65		MSN4 byte "ingrese Valor XF", 0dh, 0ah, 0
+	   73 65 20 56 61
+	   6C 6F 72 20 58
+	   46 0D 0A 00
+ 000001E8 69 6E 67 72 65		MSN5 byte "ingrese Valor YF", 0dh, 0ah, 0
+	   73 65 20 56 61
+	   6C 6F 72 20 59
+	   46 0D 0A 00
+ 000001FB 69 6E 67 72 65		MSN6 byte "ingrese Valor RF", 0dh, 0ah, 0
+	   73 65 20 56 61
+	   6C 6F 72 20 52
+	   46 0D 0A 00
+
+ 0000020E 4C 61 73 20 63		CASE1 byte "Las circunferencias son exteriores", 0dh, 0ah, 0
+	   69 72 63 75 6E
+	   66 65 72 65 6E
+	   63 69 61 73 20
+	   73 6F 6E 20 65
+	   78 74 65 72 69
+	   6F 72 65 73 0D
+	   0A 00
+ 00000233 4C 61 73 20 63		CASE2 byte "Las circunferencias son secantes", 0dh, 0ah, 0
+	   69 72 63 75 6E
+	   66 65 72 65 6E
+	   63 69 61 73 20
+	   73 6F 6E 20 73
+	   65 63 61 6E 74
+	   65 73 0D 0A 00
+ 00000256 4C 61 73 20 63		CASE3 byte "Las circunferencias son interiores concentricas", 0dh, 0ah, 0
+	   69 72 63 75 6E
+	   66 65 72 65 6E
+	   63 69 61 73 20
+	   73 6F 6E 20 69
+	   6E 74 65 72 69
+	   6F 72 65 73 20
+	   63 6F 6E 63 65
+	   6E 74 72 69 63
+	   61 73 0D 0A 00
+ 00000288 4C 61 73 20 63		CASE4 byte "Las circunferencias son coincidentes", 0dh, 0ah, 0
+	   69 72 63 75 6E
+	   66 65 72 65 6E
+	   63 69 61 73 20
+	   73 6F 6E 20 63
+	   6F 69 6E 63 69
+	   64 65 6E 74 65
+	   73 0D 0A 00
+ 000002AF 4C 61 73 20 63		CASE5 byte "Las circunferencias son interiores excentricas", 0dh, 0ah, 0
+	   69 72 63 75 6E
+	   66 65 72 65 6E
+	   63 69 61 73 20
+	   73 6F 6E 20 69
+	   6E 74 65 72 69
+	   6F 72 65 73 20
+	   65 78 63 65 6E
+	   74 72 69 63 61
+	   73 0D 0A 00
+ 000002E0 4C 61 73 20 63		CASE6 byte "Las circunferencias son tangentes interiormente", 0dh, 0ah, 0
+	   69 72 63 75 6E
+	   66 65 72 65 6E
+	   63 69 61 73 20
+	   73 6F 6E 20 74
+	   61 6E 67 65 6E
+	   74 65 73 20 69
+	   6E 74 65 72 69
+	   6F 72 6D 65 6E
+	   74 65 0D 0A 00
+ 00000312 4C 61 73 20 63		CASE7 byte "Las circunferencias son tangentes exteriormente", 0dh, 0ah, 0
+	   69 72 63 75 6E
+	   66 65 72 65 6E
+	   63 69 61 73 20
+	   73 6F 6E 20 74
+	   61 6E 67 65 6E
+	   74 65 73 20 65
+	   78 74 65 72 69
+	   6F 72 6D 65 6E
+	   74 65 0D 0A 00
+					
+
+ 00000344 0D 0A 00			SPACE byte 0dh, 0ah, 0
+
+ 00000347 00000000			XI real4 0.0			; x circulo1 
+ 0000034B 00000000			YI real4 0.0			; y circulo1 
+ 0000034F 00000000			RI real4 0.0			; r circulo1 
+ 00000353 00000000			XF real4 0.0			; x circulo2 
+ 00000357 00000000			YF real4 0.0			; y circulo2 
+ 0000035B 00000000			RF real4 0.0			; r circulo1 
+					
+ 0000035F 00000000			XP1 real4 ?				; X interseccion 1
+ 00000363 00000000			YP1 real4 ?				; Y interseccion 1
+ 00000367 00000000			XP2 real4 ?				; X interseccion 2
+ 0000036B 00000000			YP2 real4 ?				; Y interseccion 2
+
+ 0000036F 00000000			DISTANCIA real4 ?		
+					
+ 00000373 00000000			RSUM real4 ?			; suma de radios
+ 00000377 00000000			RSUB real4 ?			; resta de radios
+
+ 0000037B 00000000			A real4 ?				;
+ 0000037F 00000000			H real4 ?				;
+
+ 00000383 00000000			AUX1 real4 ?
+ 00000387 00000000			AUX2 real4 ?
+ 0000038B 00000000			AUX3 real4 ?
+ 0000038F 00000000			XPaux real4 ?
+ 00000393 00000000			YPaux real4 ?
 					
 
  00000000			.code
  00000000			main PROC
 
- 00000000  BA 00000000 R		mov edx, offset MSN
+ 00000000  BA 00000000 R		mov edx, offset MSN_SALUDO
  00000005  E8 00000000 E		call writestring
+
+					; LECTURA DE VARIABLES INICIALES
+
+ 0000000A  BA 0000019C R		mov edx, offset MSN1	; mueve a edx la variable MSN1
+ 0000000F  E8 00000000 E		call writestring		; imprime MSN1
+
+ 00000014  E8 00000000 E		call Readfloat			; leer desde el teclado y guardarlo en el reg ST(0)
+ 00000019  D9 1D 00000347 R		fstp XI					; mover eax a la variale XI
+
+ 0000001F  BA 000001AF R		mov edx, offset MSN2	; mueve a edx la variable MSN2
+ 00000024  E8 00000000 E		call writestring		; imprime MSN2
+
+ 00000029  E8 00000000 E		call Readfloat			; leer desde el teclado y guardarlo en el reg ST(0)
+ 0000002E  D9 1D 0000034B R		fstp YI					; mover eax a la variale YI
+
+ 00000034  BA 000001C2 R		mov edx, offset MSN3	; mueve a edx la variable MSN3
+ 00000039  E8 00000000 E		call writestring		; imprime MSN3
+
+ 0000003E  E8 00000000 E		call Readfloat			; leer desde el teclado y guardarlo en el reg ST(0)
+ 00000043  D9 1D 0000034F R		fstp RI					; mover eax a la variale RI
+
+					; LECTURA DE VARIABLES FINALES
 					
+ 00000049  BA 000001D5 R		mov edx, offset MSN4	; mueve a edx la variable MSN1
+ 0000004E  E8 00000000 E		call writestring		; imprime MSN4
+
+ 00000053  E8 00000000 E		call Readfloat			; leer desde el teclado y guardarlo en el reg ST(0)
+ 00000058  D9 1D 00000353 R		fstp XF					; mover eax a la variale XF
 					
+ 0000005E  BA 000001E8 R		mov edx, offset MSN5	; mueve a edx la variable MSN5
+ 00000063  E8 00000000 E		call writestring		; imprime MSN5
+
+ 00000068  E8 00000000 E		call Readfloat			; leer desde el teclado y guardarlo en el reg ST(0)
+ 0000006D  D9 1D 00000357 R		fstp YF					; mover eax a la variale YF
+
+ 00000073  BA 000001FB R		mov edx, offset MSN6	; mueve a edx la variable MSN6
+ 00000078  E8 00000000 E		call writestring		; imprime MSN6
+
+ 0000007D  E8 00000000 E		call Readfloat			; leer desde el teclado y guardarlo en el reg ST(0)
+ 00000082  D9 1D 0000035B R		fstp RF					; mover eax a la variale RF
+
+						
+					; CALCULAR DISTANCIA
+					
+ 00000088  9B DB E3			finit
+ 0000008B  D9 05 00000353 R		fld XF					; se ingresa XF
+ 00000091  D9 05 00000347 R		fld XI					; se ingresa XI
+ 00000097  DE E9			fSub					; resta XF-XI
+ 00000099  D9 1D 0000036F R		fstp DISTANCIA			; DISTANCIA = XF-XI
+						
+ 0000009F  D9 05 0000036F R		fld DISTANCIA
+ 000000A5  D9 05 0000036F R		fld DISTANCIA
+ 000000AB  DE C9			fmul
+ 000000AD  D9 1D 00000383 R		fstp AUX1				; AUX1 = (XF-XI)^2
+						
+ 000000B3  D9 05 00000357 R		fld YF					; se ingresa YF
+ 000000B9  D9 05 0000034B R		fld YI					; se ingresa YI
+ 000000BF  DE E9			fSub					; resta YF-YI
+ 000000C1  D9 1D 0000036F R		fstp DISTANCIA			; DISTANCIA = YF-YI
+
+ 000000C7  D9 05 0000036F R		fld DISTANCIA
+ 000000CD  D9 05 0000036F R		fld DISTANCIA
+ 000000D3  DE C9			fmul
+ 000000D5  D9 1D 00000387 R		fstp AUX2				; AUX2 = (YF-YI)^2
+						
+ 000000DB  D9 05 00000383 R		fld AUX1
+ 000000E1  D9 05 00000387 R		fld AUX2
+ 000000E7  DE C1			fadd					; (XF-XI)^2 + (YF-YI)^2
+ 000000E9  D9 FA			fsqrt
+ 000000EB  D9 1D 0000036F R		fstp DISTANCIA			; DISTANCIA = sqrt( (XF-XI)^2 + (YF-YI)^2 )
+					
+ 000000F1  9B DB E3			finit	
+ 000000F4  D9 05 0000036F R		fld DISTANCIA		
+					;call writefloat			; Print DISTANCIA
+
+ 000000FA  BA 00000344 R		mov edx, offset SPACE
+					;call writestring		; Print \n
+
+					; CALCULO DE SUMA Y RESTA DE RADIOS
+					; SUMA
+
+ 000000FF  9B DB E3			finit					; inicia operacion punto flotante
+ 00000102  D9 05 0000034F R		fld RI					; ingresa RI que es radio de la primera circunferencia
+ 00000108  D9 05 0000035B R		fld RF					; ingresa RF que es radio de la segunda circunferencia
+ 0000010E  DE C1			fadd					; RI + RF
+ 00000110  D9 1D 00000373 R		fstp RSUM				; RSUM = RI + RF
+
+ 00000116  9B DB E3			finit
+ 00000119  D9 05 00000373 R		fld RSUM
+					;call writefloat			; Print RSUM
+
+ 0000011F  BA 00000344 R		mov edx, offset SPACE
+					;call writestring		; Print \n
+
+					; RESTA
+
+ 00000124  9B DB E3			finit					; inicia operacion punto flotante
+ 00000127  D9 05 0000034F R		fld RI					; ingresa RI que es radio de la primera circunferencia
+ 0000012D  D9 05 0000035B R		fld RF					; ingresa RF que es radio de la segunda circunferencia
+ 00000133  DE E9			fsub					; RI - RF
+ 00000135  D9 E1			fabs					; abs(RI - RF)
+ 00000137  D9 1D 00000377 R		fstp RSUB				; RSUB = abs(RI - RF)
+
+ 0000013D  9B DB E3			finit
+ 00000140  D9 05 00000377 R		fld RSUB
+					;call writefloat			; Print RSUB
+
+ 00000146  BA 00000344 R		mov edx, offset SPACE
+					;call writestring		; Print \n
+
+					; CALCULO DE A= ( RI^2 - RF^2 + D^2 ) / 2D
+					
+ 0000014B  9B DB E3			finit
+ 0000014E  D9 05 0000034F R		fld RI
+ 00000154  D9 05 0000034F R		fld RI
+ 0000015A  DE C9			fmul
+ 0000015C  D9 1D 00000383 R		fstp AUX1				; AUX1 = RI^2
+
+ 00000162  9B DB E3			finit
+ 00000165  D9 05 0000035B R		fld RF
+ 0000016B  D9 05 0000035B R		fld RF
+ 00000171  DE C9			fmul
+ 00000173  D9 1D 00000387 R		fstp AUX2				; AUX2 = RF^2
+
+ 00000179  9B DB E3			finit
+ 0000017C  D9 05 0000036F R		fld DISTANCIA
+ 00000182  D9 05 0000036F R		fld DISTANCIA
+ 00000188  DE C9			fmul
+ 0000018A  D9 1D 0000038B R		fstp AUX3				; AUX3 = DISTANCIA^2
+
+ 00000190  9B DB E3			finit
+ 00000193  D9 05 00000383 R		fld AUX1
+ 00000199  D9 05 00000387 R		fld AUX2
+ 0000019F  DE E9			fsub					;st(0) = AUX1 - AUX2
+ 000001A1  D9 05 0000038B R		fld AUX3
+ 000001A7  DE C1			fadd
+ 000001A9  D9 1D 00000383 R		fstp AUX1				; AUX1 = ( RI^2 - RF^2 + D^2)
+
+ 000001AF  9B DB E3			finit 
+ 000001B2  D9 E8			fld1 
+ 000001B4  D9 E8			fld1
+ 000001B6  DE C1			fadd
+ 000001B8  D9 05 0000036F R		fld DISTANCIA
+ 000001BE  DE C9			fmul
+ 000001C0  D9 1D 00000387 R		fstp AUX2				; AUX2= 2 * DISTANCIA
+
+ 000001C6  9B DB E3			finit
+ 000001C9  D9 05 00000383 R		fld AUX1
+ 000001CF  D9 05 00000387 R		fld AUX2
+ 000001D5  DE F9			fdiv
+ 000001D7  D9 1D 0000037B R		fstp A					; A= ( RI^2 - RF^2 + D^2 ) / 2D
+
+					; CALCULO DE H= sqrt(r*r - a*a)
+
+ 000001DD  9B DB E3			finit
+ 000001E0  D9 05 0000034F R		fld RI
+ 000001E6  D9 05 0000034F R		fld RI
+ 000001EC  DE C9			fmul
+ 000001EE  D9 1D 00000383 R		fstp AUX1				; AUX1 = RI^2
+
+ 000001F4  9B DB E3			finit
+ 000001F7  D9 05 0000037B R		fld A
+ 000001FD  D9 05 0000037B R		fld A
+ 00000203  DE C9			fmul
+ 00000205  D9 1D 00000387 R		fstp AUX2				; AUX2 = A^2
+
+ 0000020B  9B DB E3			finit
+ 0000020E  D9 05 00000383 R		fld AUX1
+ 00000214  D9 05 00000387 R		fld AUX2
+ 0000021A  DE E9			fsub
+ 0000021C  D9 E1			fabs
+ 0000021E  D9 FA			fsqrt
+ 00000220  D9 1D 0000037F R		fstp H					; H = sqrt( RI^2 - A^2 )
+
+					; INICIO DE CONDICIONALES
+
+ 00000226  83 3D 0000036F R		cmp DISTANCIA, 0		
+	   00
+ 0000022D  0F 84 00000226		jz fin3					; if (DISTANCIA == 0) vaya a fin3 --> Tienen el mismo centro
+
+ 00000233  A1 00000373 R		mov eax, RSUM
+ 00000238  39 05 0000036F R		cmp DISTANCIA, eax		
+ 0000023E  7F 0D			jg fin1					; if (DISTANCIA > RSUM) vaya a fin1
+ 00000240  7C 24			jl fin2					; if (DISTANCIA < RSUM) vaya a fin2
+ 00000242  0F 84 0000024A		jz fin5					; if (DISTANCIA == RSUM) vaya a fin5
+ 00000248  E9 00000247			jmp fin_code
+
+					; CASE1 = son exteriores // NO SE INTERSECTAN
+					
+ 0000024D				fin1:
+ 0000024D  BA 0000020E R			mov edx, offset CASE1
+ 00000252  E8 00000000 E			call writestring		; Print CASE1
+						
+ 00000257  BA 00000344 R			mov edx, offset SPACE
+ 0000025C  E8 00000000 E			call writestring		; Print \n
+ 00000261  E9 0000022E				jmp fin_code
+
+					; CASE2 = son secantes
+
+ 00000266				fin2:
+ 00000266  BA 00000233 R			mov edx, offset CASE2
+ 0000026B  E8 00000000 E			call writestring		; Print CASE2
+
+ 00000270  BA 00000344 R			mov edx, offset SPACE
+ 00000275  E8 00000000 E			call writestring		; Print \n
+
+						; Paux = (CIRCULO2 - CIRCULO1)
+						
+ 0000027A  9B DB E3				finit
+ 0000027D  D9 05 00000353 R			fld XF
+ 00000283  D9 05 00000347 R			fld XI
+ 00000289  DE E9				fsub
+ 0000028B  D9 1D 0000038F R			fstp XPaux				; XPaux = XF - XI
+
+ 00000291  9B DB E3				finit
+ 00000294  D9 05 00000357 R			fld YF
+ 0000029A  D9 05 0000034B R			fld YI
+ 000002A0  DE E9				fsub
+ 000002A2  D9 1D 00000393 R			fstp YPaux				; YPaux = YF - YI
+
+						; Paux *= a/d
+ 000002A8  9B DB E3				finit
+ 000002AB  D9 05 0000037B R			fld A
+ 000002B1  D9 05 0000036F R			fld DISTANCIA
+ 000002B7  DE F9				fdiv
+ 000002B9  D9 1D 00000383 R			fstp AUX1				; AUX1 = A/D
+
+ 000002BF  9B DB E3				finit 
+ 000002C2  D9 05 0000038F R			fld XPaux
+ 000002C8  D9 05 00000383 R			fld AUX1
+ 000002CE  DE C9				fmul
+ 000002D0  D9 1D 0000038F R			fstp XPaux				; XPaux *= A/D
+
+ 000002D6  9B DB E3				finit 
+ 000002D9  D9 05 00000393 R			fld YPaux
+ 000002DF  D9 05 00000383 R			fld AUX1
+ 000002E5  DE C9				fmul
+ 000002E7  D9 1D 00000393 R			fstp YPaux				; YPaux *= A/D
+
+						; Paux += CIRCULO1 
+
+ 000002ED  9B DB E3				finit
+ 000002F0  D9 05 0000038F R			fld XPaux
+ 000002F6  D9 05 00000347 R			fld XI
+ 000002FC  DE C1				fadd
+ 000002FE  D9 1D 0000038F R			fstp XPaux				; XPaux += XI
+
+ 00000304  9B DB E3				finit
+ 00000307  D9 05 00000393 R			fld YPaux
+ 0000030D  D9 05 0000034B R			fld YI
+ 00000313  DE C1				fadd
+ 00000315  D9 1D 00000393 R			fstp YPaux				; YPaux += YI
+						
+						; XP1 = XPaux + H * (YF - YI) / D;
+ 0000031B  9B DB E3				finit
+ 0000031E  D9 05 00000357 R			fld YF
+ 00000324  D9 05 0000034B R			fld YI
+ 0000032A  DE E9				fsub
+ 0000032C  D9 05 0000037F R			fld H
+ 00000332  DE C9				fmul
+ 00000334  D9 05 0000036F R			fld DISTANCIA
+ 0000033A  DE F9				fdiv
+ 0000033C  D9 05 0000038F R			fld XPaux
+ 00000342  DE C1				fadd
+ 00000344  D9 1D 0000035F R			fstp XP1
+						
+ 0000034A  9B DB E3				finit
+ 0000034D  D9 05 0000035F R			fld XP1
+ 00000353  E8 00000000 E			call writefloat
+
+ 00000358  BA 00000344 R			mov edx, offset SPACE
+ 0000035D  E8 00000000 E			call writestring		; Print \n
+
+						; YP1 = YPaux - H * (XF - XI) / D;
+ 00000362  9B DB E3				finit
+ 00000365  D9 05 00000353 R			fld XF
+ 0000036B  D9 05 00000347 R			fld XI
+ 00000371  DE E9				fsub
+ 00000373  D9 E1				fabs
+ 00000375  D9 05 0000037F R			fld H
+ 0000037B  DE C9				fmul
+ 0000037D  D9 05 0000036F R			fld DISTANCIA
+ 00000383  DE F9				fdiv
+ 00000385  D9 1D 00000383 R			fstp AUX1				; AUX1= H * (XF - XI) / D
+
+ 0000038B  9B DB E3				finit 
+ 0000038E  D9 05 00000393 R			fld YPaux
+ 00000394  D9 05 00000383 R			fld AUX1
+ 0000039A  DE E9				fsub
+ 0000039C  D9 1D 00000363 R			fstp YP1
+						
+ 000003A2  9B DB E3				finit
+ 000003A5  D9 05 00000363 R			fld YP1
+ 000003AB  E8 00000000 E			call writefloat
+
+ 000003B0  BA 00000344 R			mov edx, offset SPACE
+ 000003B5  E8 00000000 E			call writestring		; Print \n
+
+						; XP2 = XPaux - H * (YF - YI) / D;
+ 000003BA  9B DB E3				finit
+ 000003BD  D9 05 00000357 R			fld YF
+ 000003C3  D9 05 0000034B R			fld YI
+ 000003C9  DE E9				fsub
+ 000003CB  D9 05 0000037F R			fld H
+ 000003D1  DE C9				fmul
+ 000003D3  D9 05 0000036F R			fld DISTANCIA
+ 000003D9  DE F9				fdiv
+ 000003DB  D9 1D 00000383 R			fstp AUX1
+
+ 000003E1  9B DB E3				finit
+ 000003E4  D9 05 0000038F R			fld XPaux
+ 000003EA  D9 05 00000383 R			fld AUX1
+ 000003F0  DE E9				fsub
+ 000003F2  D9 1D 00000367 R			fstp XP2
+						
+ 000003F8  9B DB E3				finit
+ 000003FB  D9 05 00000367 R			fld XP2
+ 00000401  E8 00000000 E			call writefloat
+
+ 00000406  BA 00000344 R			mov edx, offset SPACE
+ 0000040B  E8 00000000 E			call writestring		; Print \n
+
+						; YP2 = YPaux + H * (XF - XI) / D;
+ 00000410  9B DB E3				finit
+ 00000413  D9 05 00000353 R			fld XF
+ 00000419  D9 05 00000347 R			fld XI
+ 0000041F  DE E9				fsub
+ 00000421  D9 05 0000037F R			fld H
+ 00000427  DE C9				fmul
+ 00000429  D9 05 0000036F R			fld DISTANCIA
+ 0000042F  DE F9				fdiv
+ 00000431  D9 05 00000393 R			fld YPaux
+ 00000437  DE C1				fadd
+ 00000439  D9 1D 0000036B R			fstp YP2
+						
+ 0000043F  9B DB E3				finit
+ 00000442  D9 05 0000036B R			fld YP2
+ 00000448  E8 00000000 E			call writefloat
+
+ 0000044D  BA 00000344 R			mov edx, offset SPACE
+ 00000452  E8 00000000 E			call writestring		; Print \n
+
+
+					; Falta escribir codigo de secante
+					
+ 00000457  EB 3B			jmp fin_code
+
+					; CASE3 = son interiores concentricas
+
+ 00000459				fin3 :
+						
+ 00000459  A1 0000034F R			mov eax, RI
+ 0000045E  39 05 0000035B R			cmp RF, eax
+ 00000464  74 16				jz fin4					; if (RI==RF) vaya a fin4 --> Radios iguales 
+
+ 00000466  BA 00000256 R			mov edx, offset CASE3
+ 0000046B  E8 00000000 E			call writestring		; Print CASE3
+						
+ 00000470  BA 00000344 R			mov edx, offset SPACE
+ 00000475  E8 00000000 E			call writestring		; Print \n
+ 0000047A  EB 18				jmp fin_code
+
+					; CASE4 = son coincidentes
+
+ 0000047C				fin4:
+
+ 0000047C  BA 00000288 R			mov edx, offset CASE4
+ 00000481  E8 00000000 E			call writestring		; Print CASE4
+						
+ 00000486  BA 00000344 R			mov edx, offset SPACE
+ 0000048B  E8 00000000 E			call writestring		; Print \n
+ 00000490  EB 02				jmp fin_code
+
+					; CASE5 = por definir
+
+ 00000492				fin5:
+						; falta codigo fin5
+ 00000492  EB 00				jmp fin_code
+
+ 00000494				fin_code:
+
 					exit
- 0000000A  6A 00	   *	    push   +000000000h
- 0000000C  E8 00000000 E   *	    call   ExitProcess
- 00000011			main ENDP
+ 00000494  6A 00	   *	    push   +000000000h
+ 00000496  E8 00000000 E   *	    call   ExitProcess
+ 0000049B			main ENDP
 				END main
-Microsoft (R) Macro Assembler Version 14.28.29333.0	    11/18/20 22:11:36
+Microsoft (R) Macro Assembler Version 14.28.29333.0	    11/28/20 16:07:16
 <ChavarriaLopezMoreno-Arquitectura2020II         (practica.a  Symbols 2 - 1
 
 
@@ -225,8 +722,8 @@ Segments and Groups:
 
 FLAT . . . . . . . . . . . . . .	GROUP
 STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
-_DATA  . . . . . . . . . . . . .	32 Bit	 0000019F Para	  Public  'DATA'	
-_TEXT  . . . . . . . . . . . . .	32 Bit	 00000011 Para	  Public  'CODE'	
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000397 Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 0000049B Para	  Public  'CODE'	
 
 
 Procedures, parameters, and locals:
@@ -333,7 +830,13 @@ WriteStackFrame  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 WriteString  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteToFile  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteWindowsMsg  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000011 Public STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000049B Public STDCALL
+  fin1 . . . . . . . . . . . . .	L Near	 0000024D _TEXT	
+  fin2 . . . . . . . . . . . . .	L Near	 00000266 _TEXT	
+  fin3 . . . . . . . . . . . . .	L Near	 00000459 _TEXT	
+  fin4 . . . . . . . . . . . . .	L Near	 0000047C _TEXT	
+  fin5 . . . . . . . . . . . . .	L Near	 00000492 _TEXT	
+  fin_code . . . . . . . . . . .	L Near	 00000494 _TEXT	
 printf . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 scanf  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 wsprintfA  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
@@ -353,11 +856,23 @@ Symbols:
 @fardata . . . . . . . . . . . .	Text   	 FLAT
 @stack . . . . . . . . . . . . .	Text   	 FLAT
 ALT_MASK . . . . . . . . . . . .	Number	 00000003h   
+AUX1 . . . . . . . . . . . . . .	DWord	 00000383 _DATA	
+AUX2 . . . . . . . . . . . . . .	DWord	 00000387 _DATA	
+AUX3 . . . . . . . . . . . . . .	DWord	 0000038B _DATA	
+A  . . . . . . . . . . . . . . .	DWord	 0000037B _DATA	
 CAPSLOCK_ON  . . . . . . . . . .	Number	 00000080h   
+CASE1  . . . . . . . . . . . . .	Byte	 0000020E _DATA	
+CASE2  . . . . . . . . . . . . .	Byte	 00000233 _DATA	
+CASE3  . . . . . . . . . . . . .	Byte	 00000256 _DATA	
+CASE4  . . . . . . . . . . . . .	Byte	 00000288 _DATA	
+CASE5  . . . . . . . . . . . . .	Byte	 000002AF _DATA	
+CASE6  . . . . . . . . . . . . .	Byte	 000002E0 _DATA	
+CASE7  . . . . . . . . . . . . .	Byte	 00000312 _DATA	
 CREATE_ALWAYS  . . . . . . . . .	Number	 00000002h   
 CREATE_NEW . . . . . . . . . . .	Number	 00000001h   
 CTRL_MASK  . . . . . . . . . . .	Number	 0000000Ch   
 CreateFile . . . . . . . . . . .	Text   	 CreateFileA
+DISTANCIA  . . . . . . . . . . .	DWord	 0000036F _DATA	
 DO_NOT_SHARE . . . . . . . . . .	Number	 00000000h   
 ENABLE_ECHO_INPUT  . . . . . . .	Number	 00000004h   
 ENABLE_LINE_INPUT  . . . . . . .	Number	 00000002h   
@@ -407,6 +922,7 @@ HEAP_GROWABLE  . . . . . . . . .	Number	 00000002h
 HEAP_NO_SERIALIZE  . . . . . . .	Number	 00000001h   
 HEAP_REALLOC_IN_PLACE_ONLY . . .	Number	 00000010h   
 HEAP_ZERO_MEMORY . . . . . . . .	Number	 00000008h   
+H  . . . . . . . . . . . . . . .	DWord	 0000037F _DATA	
 IDABORT  . . . . . . . . . . . .	Number	 00000003h   
 IDCANCEL . . . . . . . . . . . .	Number	 00000002h   
 IDCLOSE  . . . . . . . . . . . .	Number	 00000008h   
@@ -451,20 +967,31 @@ MB_YESNOCANCEL . . . . . . . . .	Number	 00000003h
 MB_YESNO . . . . . . . . . . . .	Number	 00000004h   
 MENU_EVENT . . . . . . . . . . .	Number	 00000008h   
 MOUSE_EVENT  . . . . . . . . . .	Number	 00000002h   
-MSN  . . . . . . . . . . . . . .	Byte	 00000000 _DATA	
+MSN1 . . . . . . . . . . . . . .	Byte	 0000019C _DATA	
+MSN2 . . . . . . . . . . . . . .	Byte	 000001AF _DATA	
+MSN3 . . . . . . . . . . . . . .	Byte	 000001C2 _DATA	
+MSN4 . . . . . . . . . . . . . .	Byte	 000001D5 _DATA	
+MSN5 . . . . . . . . . . . . . .	Byte	 000001E8 _DATA	
+MSN6 . . . . . . . . . . . . . .	Byte	 000001FB _DATA	
+MSN_SALUDO . . . . . . . . . . .	Byte	 00000000 _DATA	
 MessageBox . . . . . . . . . . .	Text   	 MessageBoxA
 NULL . . . . . . . . . . . . . .	Number	 00000000h   
 NUMLOCK_ON . . . . . . . . . . .	Number	 00000020h   
 OPEN_ALWAYS  . . . . . . . . . .	Number	 00000004h   
 OPEN_EXISTING  . . . . . . . . .	Number	 00000003h   
 PeekConsoleInput . . . . . . . .	Text   	 PeekConsoleInputA
+RF . . . . . . . . . . . . . . .	DWord	 0000035B _DATA	
 RIGHT_ALT_PRESSED  . . . . . . .	Number	 00000001h   
 RIGHT_CTRL_PRESSED . . . . . . .	Number	 00000004h   
+RI . . . . . . . . . . . . . . .	DWord	 0000034F _DATA	
+RSUB . . . . . . . . . . . . . .	DWord	 00000377 _DATA	
+RSUM . . . . . . . . . . . . . .	DWord	 00000373 _DATA	
 ReadConsoleInput . . . . . . . .	Text   	 ReadConsoleInputA
 ReadConsole  . . . . . . . . . .	Text   	 ReadConsoleA
 SCROLLLOCK_ON  . . . . . . . . .	Number	 00000040h   
 SHIFT_MASK . . . . . . . . . . .	Number	 00000010h   
 SHIFT_PRESSED  . . . . . . . . .	Number	 00000010h   
+SPACE  . . . . . . . . . . . . .	Byte	 00000344 _DATA	
 STD_ERROR_HANDLE . . . . . . . .	Number	 -0000000Ch   
 STD_INPUT_HANDLE . . . . . . . .	Number	 -0000000Ah   
 STD_OUTPUT_HANDLE  . . . . . . .	Number	 -0000000Bh   
@@ -553,7 +1080,16 @@ VK_UP  . . . . . . . . . . . . .	Number	 00000026h
 WINDOW_BUFFER_SIZE_EVENT . . . .	Number	 00000004h   
 WriteConsoleOutputCharacter  . .	Text   	 WriteConsoleOutputCharacterA
 WriteConsole . . . . . . . . . .	Text   	 WriteConsoleA
-XI . . . . . . . . . . . . . . .	DWord	 0000019B _DATA	
+XF . . . . . . . . . . . . . . .	DWord	 00000353 _DATA	
+XI . . . . . . . . . . . . . . .	DWord	 00000347 _DATA	
+XP1  . . . . . . . . . . . . . .	DWord	 0000035F _DATA	
+XP2  . . . . . . . . . . . . . .	DWord	 00000367 _DATA	
+XPaux  . . . . . . . . . . . . .	DWord	 0000038F _DATA	
+YF . . . . . . . . . . . . . . .	DWord	 00000357 _DATA	
+YI . . . . . . . . . . . . . . .	DWord	 0000034B _DATA	
+YP1  . . . . . . . . . . . . . .	DWord	 00000363 _DATA	
+YP2  . . . . . . . . . . . . . .	DWord	 0000036B _DATA	
+YPaux  . . . . . . . . . . . . .	DWord	 00000393 _DATA	
 black  . . . . . . . . . . . . .	Number	 00000000h   
 blue . . . . . . . . . . . . . .	Number	 00000001h   
 brown  . . . . . . . . . . . . .	Number	 00000006h   

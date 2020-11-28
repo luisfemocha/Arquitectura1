@@ -33,18 +33,31 @@ INCLUDE Irvine32.inc
 
 	SPACE byte 0dh, 0ah, 0
 
-	XI real4 0.0 
-	YI real4 0.0
-	RI real4 0.0
-	XF real4 0.0
-	YF real4 0.0
-	RF real4 0.0
-	DISTANCIA real4 ?
-	RSUM real4 ?
-	RSUB real4 ?
+	XI real4 0.0			; x circulo1 
+	YI real4 0.0			; y circulo1 
+	RI real4 0.0			; r circulo1 
+	XF real4 0.0			; x circulo2 
+	YF real4 0.0			; y circulo2 
+	RF real4 0.0			; r circulo1 
+	
+	XP1 real4 ?				; X interseccion 1
+	YP1 real4 ?				; Y interseccion 1
+	XP2 real4 ?				; X interseccion 2
+	YP2 real4 ?				; Y interseccion 2
+
+	DISTANCIA real4 ?		
+	
+	RSUM real4 ?			; suma de radios
+	RSUB real4 ?			; resta de radios
+
+	A real4 ?				;
+	H real4 ?				;
 
 	AUX1 real4 ?
 	AUX2 real4 ?
+	AUX3 real4 ?
+	XPaux real4 ?
+	YPaux real4 ?
 	
 
 .code
@@ -111,7 +124,7 @@ main PROC
 	fld YI					; se ingresa YI
 	fSub					; resta YF-YI
 	fstp DISTANCIA			; DISTANCIA = YF-YI
-		
+
 	fld DISTANCIA
 	fld DISTANCIA
 	fmul
@@ -125,10 +138,10 @@ main PROC
 	
 	finit	
 	fld DISTANCIA		
-	call writefloat			; Print DISTANCIA
+	;call writefloat			; Print DISTANCIA
 
 	mov edx, offset SPACE
-	call writestring		; Print \n
+	;call writestring		; Print \n
 
 	; CALCULO DE SUMA Y RESTA DE RADIOS
 	; SUMA
@@ -141,10 +154,10 @@ main PROC
 
 	finit
 	fld RSUM
-	call writefloat			; Print RSUM
+	;call writefloat			; Print RSUM
 
 	mov edx, offset SPACE
-	call writestring		; Print \n
+	;call writestring		; Print \n
 
 	; RESTA
 
@@ -157,10 +170,74 @@ main PROC
 
 	finit
 	fld RSUB
-	call writefloat			; Print RSUB
+	;call writefloat			; Print RSUB
 
 	mov edx, offset SPACE
-	call writestring		; Print \n
+	;call writestring		; Print \n
+
+	; CALCULO DE A= ( RI^2 - RF^2 + D^2 ) / 2D
+	
+	finit
+	fld RI
+	fld RI
+	fmul
+	fstp AUX1				; AUX1 = RI^2
+
+	finit
+	fld RF
+	fld RF
+	fmul
+	fstp AUX2				; AUX2 = RF^2
+
+	finit
+	fld DISTANCIA
+	fld DISTANCIA
+	fmul
+	fstp AUX3				; AUX3 = DISTANCIA^2
+
+	finit
+	fld AUX1
+	fld AUX2
+	fsub					;st(0) = AUX1 - AUX2
+	fld AUX3
+	fadd
+	fstp AUX1				; AUX1 = ( RI^2 - RF^2 + D^2)
+
+	finit 
+	fld1 
+	fld1
+	fadd
+	fld DISTANCIA
+	fmul
+	fstp AUX2				; AUX2= 2 * DISTANCIA
+
+	finit
+	fld AUX1
+	fld AUX2
+	fdiv
+	fstp A					; A= ( RI^2 - RF^2 + D^2 ) / 2D
+
+	; CALCULO DE H= sqrt(r*r - a*a)
+
+	finit
+	fld RI
+	fld RI
+	fmul
+	fstp AUX1				; AUX1 = RI^2
+
+	finit
+	fld A
+	fld A
+	fmul
+	fstp AUX2				; AUX2 = A^2
+
+	finit
+	fld AUX1
+	fld AUX2
+	fsub
+	fabs
+	fsqrt
+	fstp H					; H = sqrt( RI^2 - A^2 )
 
 	; INICIO DE CONDICIONALES
 
@@ -174,9 +251,7 @@ main PROC
 	jz fin5					; if (DISTANCIA == RSUM) vaya a fin5
 	jmp fin_code
 
-
-
-	; CASE1 = son exteriores
+	; CASE1 = son exteriores // NO SE INTERSECTAN
 	
 	fin1:
 		mov edx, offset CASE1
@@ -189,6 +264,148 @@ main PROC
 	; CASE2 = son secantes
 
 	fin2:
+		mov edx, offset CASE2
+		call writestring		; Print CASE2
+
+		mov edx, offset SPACE
+		call writestring		; Print \n
+
+		; Paux = (CIRCULO2 - CIRCULO1)
+		
+		finit
+		fld XF
+		fld XI
+		fsub
+		fstp XPaux				; XPaux = XF - XI
+
+		finit
+		fld YF
+		fld YI
+		fsub
+		fstp YPaux				; YPaux = YF - YI
+
+		; Paux *= a/d
+		finit
+		fld A
+		fld DISTANCIA
+		fdiv
+		fstp AUX1				; AUX1 = A/D
+
+		finit 
+		fld XPaux
+		fld AUX1
+		fmul
+		fstp XPaux				; XPaux *= A/D
+
+		finit 
+		fld YPaux
+		fld AUX1
+		fmul
+		fstp YPaux				; YPaux *= A/D
+
+		; Paux += CIRCULO1 
+
+		finit
+		fld XPaux
+		fld XI
+		fadd
+		fstp XPaux				; XPaux += XI
+
+		finit
+		fld YPaux
+		fld YI
+		fadd
+		fstp YPaux				; YPaux += YI
+		
+		; XP1 = XPaux + H * (YF - YI) / D;
+		finit
+		fld YF
+		fld YI
+		fsub
+		fld H
+		fmul
+		fld DISTANCIA
+		fdiv
+		fld XPaux
+		fadd
+		fstp XP1
+		
+		finit
+		fld XP1
+		call writefloat
+
+		mov edx, offset SPACE
+		call writestring		; Print \n
+
+		; YP1 = YPaux - H * (XF - XI) / D;
+		finit
+		fld XF
+		fld XI
+		fsub
+		fabs
+		fld H
+		fmul
+		fld DISTANCIA
+		fdiv
+		fstp AUX1				; AUX1= H * (XF - XI) / D
+
+		finit 
+		fld YPaux
+		fld AUX1
+		fsub
+		fstp YP1
+		
+		finit
+		fld YP1
+		call writefloat
+
+		mov edx, offset SPACE
+		call writestring		; Print \n
+
+		; XP2 = XPaux - H * (YF - YI) / D;
+		finit
+		fld YF
+		fld YI
+		fsub
+		fld H
+		fmul
+		fld DISTANCIA
+		fdiv
+		fstp AUX1
+
+		finit
+		fld XPaux
+		fld AUX1
+		fsub
+		fstp XP2
+		
+		finit
+		fld XP2
+		call writefloat
+
+		mov edx, offset SPACE
+		call writestring		; Print \n
+
+		; YP2 = YPaux + H * (XF - XI) / D;
+		finit
+		fld XF
+		fld XI
+		fsub
+		fld H
+		fmul
+		fld DISTANCIA
+		fdiv
+		fld YPaux
+		fadd
+		fstp YP2
+		
+		finit
+		fld YP2
+		call writefloat
+
+		mov edx, offset SPACE
+		call writestring		; Print \n
+
 
 	; Falta escribir codigo de secante
 	
