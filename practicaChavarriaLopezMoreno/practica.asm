@@ -22,8 +22,14 @@ INCLUDE Irvine32.inc
 	MSN5 byte "ingrese Valor YF", 0dh, 0ah, 0
 	MSN6 byte "ingrese Valor RF", 0dh, 0ah, 0
 
+	MSN_COORDENADAS_SEC1 byte "Coordenadas de puntos de interseccion 1", 0dh, 0ah, 0
+	MSN_COORDENADAS_SEC2 byte "Coordenadas de puntos de interseccion 2", 0dh, 0ah, 0
+	MSN_COORDENADAS_TAN byte "Coordenada de puntos tangentes", 0dh, 0ah, 0
+	PRINT_X byte "X = ", 0
+	PRINT_Y byte "Y = ", 0
+
 	CASE1 byte "Las circunferencias son exteriores", 0dh, 0ah, 0
-	CASE2 byte "Las circunferencias son secantes", 0dh, 0ah, 0
+	CASE2 byte "Las circunferencias son secantes y se intersectan en:", 0dh, 0ah, 0
 	CASE3 byte "Las circunferencias son interiores concentricas", 0dh, 0ah, 0
 	CASE4 byte "Las circunferencias son coincidentes", 0dh, 0ah, 0
 	CASE5 byte "Las circunferencias son interiores excentricas", 0dh, 0ah, 0
@@ -330,6 +336,12 @@ main PROC
 		fadd
 		fstp XP1
 		
+		mov edx, offset MSN_COORDENADAS_SEC1	; mueve a edx la variable MSN_COORDENADAS_SEC
+		call writestring						; imprime MSN_COORDENADAS_SEC
+		
+		mov edx, offset PRINT_X					; mueve a edx la variable PRINT_X
+		call writestring						; imprime PRINT_X
+		
 		finit
 		fld XP1
 		call writefloat
@@ -355,9 +367,16 @@ main PROC
 		fsub
 		fstp YP1
 		
+		
+		mov edx, offset PRINT_Y					; mueve a edx la variable PRINT_Y
+		call writestring						; imprime PRINT_Y
+
 		finit
 		fld YP1
 		call writefloat
+
+		mov edx, offset SPACE
+		call writestring		; Print \n
 
 		mov edx, offset SPACE
 		call writestring		; Print \n
@@ -379,6 +398,12 @@ main PROC
 		fsub
 		fstp XP2
 		
+		mov edx, offset MSN_COORDENADAS_SEC2	; mueve a edx la variable MSN_COORDENADAS_SEC
+		call writestring						; imprime MSN_COORDENADAS_SEC
+				
+		mov edx, offset PRINT_X					; mueve a edx la variable PRINT_X
+		call writestring						; imprime PRINT_X
+		
 		finit
 		fld XP2
 		call writefloat
@@ -399,17 +424,17 @@ main PROC
 		fadd
 		fstp YP2
 		
+		mov edx, offset PRINT_Y					; mueve a edx la variable PRINT_Y
+		call writestring						; imprime PRINT_Y
+		
 		finit
 		fld YP2
 		call writefloat
 
 		mov edx, offset SPACE
 		call writestring		; Print \n
-
-
-	; Falta escribir codigo de secante
 	
-	jmp fin_code
+		jmp fin_code
 
 	; CASE3 = son interiores concentricas
 

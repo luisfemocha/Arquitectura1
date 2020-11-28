@@ -2,3 +2,5 @@ C:\Users\luisf\Documents\.UNAL\Arquitectura\externos\Project32_VS2019\Debug\Proj
 C:\Users\luisf\Documents\.UNAL\Arquitectura\externos\Project32_VS2019\Debug\Project.pdb
 C:\Users\luisf\Documents\.UNAL\Arquitectura\propios\Arquitectura1\practicaChavarriaLopezMoreno\Debug\Project.exe
 C:\Users\luisf\Documents\.UNAL\Arquitectura\propios\Arquitectura1\practicaChavarriaLopezMoreno\Debug\Project.pdb
+d:\Users\Diego\Documents\GitHub\Arquitectura1\practicaChavarriaLopezMoreno\Debug\Project.exe
+d:\Users\Diego\Documents\GitHub\Arquitectura1\practicaChavarriaLopezMoreno\Debug\Project.pdb
