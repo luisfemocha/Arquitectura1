@@ -1,6 +1,6 @@
 TITLE ChavarriaLopezMoreno-Arquitectura2020II         (practica.asm)
 
-; Realizado por: Luis Felipe Moreno Chamorro - Diego AndrÈs ChavarrÌa RiaÒo - Jose Fernando Lopez RamÌrez
+; Realizado por: Luis Felipe Moreno Chamorro - Diego Andr√©s Chavarr√≠a Ria√±o - Jose Fernando Lopez Ram√≠rez
 ; Asignatura: Arquitectura del computador
 ; Semestre: 2020-2s
 
@@ -8,11 +8,11 @@ INCLUDE Irvine32.inc
 
 .data
 
-	MSN_SALUDO byte "Hola", 0dh,0ah,
-	"Este proyecto ha sido realizado por: Luis Felipe Moreno Chamorro - Diego Andres Chavarria Riano - Jose Fernando Lopez Ramirez", 0dh,0ah,
-		"Asignatura: Arquitectura del computador", 0dh,0ah,
-		"Semestre: 2020-2s",0dh,0ah,
-		"El objetivo de este programa es clasificar las circunferencias a partir de unos datos (coordenadas) solicitadas al usuario, que en caso de corresponder a determinada clasificacion se daran valores eetra para esta",0dh,0ah,
+	MSN_SALUDO byte "Saludos.", 0dh,0ah,
+	"Este proyecto ha sido realizado por: Luis Felipe Moreno Chamorro - Diego Andres Chavarria Riano - Jose Fernando Lopez Ramirez.", 0dh,0ah,
+		"Asignatura: Arquitectura del computador.", 0dh,0ah,
+		"Semestre: 2020-2s.",0dh,0ah,
+		"El objetivo de este programa es clasificar las circunferencias a partir de unos datos (coordenadas) solicitadas al usuario, que en caso de corresponder a determinada clasificaci√≥n se dar√°n valores extra para esta.",0dh,0ah,
 		0dh,0ah, 0dh,0ah,0
 
 	MSN1 byte "ingrese Valor XI", 0dh, 0ah, 0
