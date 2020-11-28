@@ -32,11 +32,10 @@ INCLUDE Irvine32.inc
 	CASE2 byte "Las circunferencias son secantes y se intersectan en:", 0dh, 0ah, 0
 	CASE3 byte "Las circunferencias son interiores concentricas", 0dh, 0ah, 0
 	CASE4 byte "Las circunferencias son coincidentes", 0dh, 0ah, 0
-	CASE5 byte "Las circunferencias son interiores excentricas", 0dh, 0ah, 0
+	CASE5 byte "Las circunferencias son tangentes exteriormente", 0dh, 0ah, 0
 	CASE6 byte "Las circunferencias son tangentes interiormente", 0dh, 0ah, 0
-	CASE7 byte "Las circunferencias son tangentes exteriormente", 0dh, 0ah, 0
+	CASE7 byte "Las circunferencias son interiores excentricas", 0dh, 0ah, 0
 	
-
 	SPACE byte 0dh, 0ah, 0
 
 	XI real4 0.0			; x circulo1 
@@ -250,15 +249,20 @@ main PROC
 	cmp DISTANCIA, 0		
 	jz fin3					; if (DISTANCIA == 0) vaya a fin3 --> Tienen el mismo centro
 
+	mov eax, RSUB
+	cmp DISTANCIA, eax
+	jl fin7					; if (DISTANCIA < RSUB) vaya a fin7 INTERIORES EXENTRICOS
+	jz fin6					; if (DISTANCIA == RSUB) vaya a fin6 TANGENCIA INTERIOR
+
 	mov eax, RSUM
 	cmp DISTANCIA, eax		
-	jg fin1					; if (DISTANCIA > RSUM) vaya a fin1
-	jl fin2					; if (DISTANCIA < RSUM) vaya a fin2
-	jz fin5					; if (DISTANCIA == RSUM) vaya a fin5
+	jg fin1					; if (DISTANCIA > RSUM) vaya a fin1 NO SE CORTAN
+	jl fin2					; if (DISTANCIA < RSUM) vaya a fin2 SECANTE
+	jz fin5					; if (DISTANCIA == RSUM) vaya a fin5 TANGENCIA EXTERIOR
 	jmp fin_code
 
+
 	; CASE1 = son exteriores // NO SE INTERSECTAN
-	
 	fin1:
 		mov edx, offset CASE1
 		call writestring		; Print CASE1
@@ -267,8 +271,8 @@ main PROC
 		call writestring		; Print \n
 		jmp fin_code
 
-	; CASE2 = son secantes
 
+	; CASE2 = son secantes
 	fin2:
 		mov edx, offset CASE2
 		call writestring		; Print CASE2
@@ -347,19 +351,18 @@ main PROC
 		call writefloat
 
 		mov edx, offset SPACE
-		call writestring		; Print \n
+		call writestring						; Print \n
 
 		; YP1 = YPaux - H * (XF - XI) / D;
 		finit
 		fld XF
 		fld XI
 		fsub
-		fabs
 		fld H
 		fmul
 		fld DISTANCIA
 		fdiv
-		fstp AUX1				; AUX1= H * (XF - XI) / D
+		fstp AUX1								; AUX1= H * (XF - XI) / D
 
 		finit 
 		fld YPaux
@@ -436,8 +439,10 @@ main PROC
 	
 		jmp fin_code
 
-	; CASE3 = son interiores concentricas
+	jmp fin_code
 
+
+	; CASE3 = son interiores concentricas
 	fin3 :
 		
 		mov eax, RI
@@ -451,8 +456,8 @@ main PROC
 		call writestring		; Print \n
 		jmp fin_code
 
-	; CASE4 = son coincidentes
 
+	; CASE4 = son coincidentes
 	fin4:
 
 		mov edx, offset CASE4
@@ -462,12 +467,132 @@ main PROC
 		call writestring		; Print \n
 		jmp fin_code
 
-	; CASE5 = por definir
 
+	; CASE5 byte "Las circunferencias son tangentes exteriormente", 0dh, 0ah, 0
 	fin5:
-		; falta codigo fin5
+		;XP1 = XI+a*(XF-XI)/d
+
+		finit
+		fld XF
+		fld XI
+		fsub
+		fld A
+		fmul
+		fld DISTANCIA
+		fdiv
+		fld XI
+		fadd
+		fstp XP1
+
+		;YP1 = YI+a*(YF-YI)/d
+
+		finit
+		fld YF
+		fld YI
+		fsub
+		fld A
+		fmul
+		fld DISTANCIA
+		fdiv
+		fld YI
+		fadd
+		fstp YP1
+
+		mov edx, offset CASE5
+		call writestring						; Print CASE5
+		
+		mov edx, offset MSN_COORDENADAS_TAN		; mueve a edx la variable tangencial
+		call writestring						; imprime
+
+		mov edx, offset PRINT_X					; mueve a edx la variable PRINT_X
+		call writestring						; imprime PRINT_X
+		
+		finit
+		fld XP1
+		call writefloat
+
+		mov edx, offset SPACE
+		call writestring						; Print \n
+		
+		mov edx, offset PRINT_Y					; mueve a edx la variable PRINT_Y
+		call writestring						; imprime PRINT_Y
+		
+		finit
+		fld YP1
+		call writefloat
+
+		mov edx, offset SPACE
+		call writestring						; Print \n
+
 		jmp fin_code
 
+
+	; CASE6 byte "Las circunferencias son tangentes interiormente", 0dh, 0ah, 0
+	fin6:
+		;XP1 = XI+a*(XF-XI)/d
+
+		finit
+		fld XF
+		fld XI
+		fsub
+		fld A
+		fmul
+		fld DISTANCIA
+		fdiv
+		fld XI
+		fadd
+		fstp XP1
+
+		;YP1 = YI+a*(YF-YI)/d
+
+		finit
+		fld YF
+		fld YI
+		fsub
+		fld A
+		fmul
+		fld DISTANCIA
+		fdiv
+		fld YI
+		fadd
+		fstp YP1
+
+		mov edx, offset CASE6
+		call writestring						; Print CASE6
+		
+		mov edx, offset MSN_COORDENADAS_TAN		; mueve a edx la variable tangencial
+		call writestring						; imprime 
+		
+		mov edx, offset PRINT_X					; mueve a edx la variable PRINT_X
+		call writestring						; imprime PRINT_X
+		
+		finit
+		fld XP1
+		call writefloat
+
+		mov edx, offset SPACE
+		call writestring						; Print \n
+		
+		mov edx, offset PRINT_Y					; mueve a edx la variable PRINT_Y
+		call writestring						; imprime PRINT_Y
+		
+		finit
+		fld YP1
+		call writefloat
+
+		mov edx, offset SPACE
+		call writestring						; Print \n
+
+		jmp fin_code
+
+
+	; CASE7 = INTERIORES EXCENTRICOS
+	fin7:
+		mov edx, offset CASE7
+		call writestring		; Print CASE7
+		
+		mov edx, offset SPACE
+		call writestring		; Print \n
 	fin_code:
 
 	exit

@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 14.28.29334.0	    11/28/20 16:30:13
+Microsoft (R) Macro Assembler Version 14.28.29333.0	    11/28/20 17:14:54
 <ChavarriaLopezMoreno-Arquitectura2020II         (practica.a  Page 1 - 1
 
 
@@ -209,27 +209,7 @@ Microsoft (R) Macro Assembler Version 14.28.29334.0	    11/28/20 16:30:13
 	   6F 69 6E 63 69
 	   64 65 6E 74 65
 	   73 0D 0A 00
- 00000343 4C 61 73 20 63		CASE5 byte "Las circunferencias son interiores excentricas", 0dh, 0ah, 0
-	   69 72 63 75 6E
-	   66 65 72 65 6E
-	   63 69 61 73 20
-	   73 6F 6E 20 69
-	   6E 74 65 72 69
-	   6F 72 65 73 20
-	   65 78 63 65 6E
-	   74 72 69 63 61
-	   73 0D 0A 00
- 00000374 4C 61 73 20 63		CASE6 byte "Las circunferencias son tangentes interiormente", 0dh, 0ah, 0
-	   69 72 63 75 6E
-	   66 65 72 65 6E
-	   63 69 61 73 20
-	   73 6F 6E 20 74
-	   61 6E 67 65 6E
-	   74 65 73 20 69
-	   6E 74 65 72 69
-	   6F 72 6D 65 6E
-	   74 65 0D 0A 00
- 000003A6 4C 61 73 20 63		CASE7 byte "Las circunferencias son tangentes exteriormente", 0dh, 0ah, 0
+ 00000343 4C 61 73 20 63		CASE5 byte "Las circunferencias son tangentes exteriormente", 0dh, 0ah, 0
 	   69 72 63 75 6E
 	   66 65 72 65 6E
 	   63 69 61 73 20
@@ -239,8 +219,27 @@ Microsoft (R) Macro Assembler Version 14.28.29334.0	    11/28/20 16:30:13
 	   78 74 65 72 69
 	   6F 72 6D 65 6E
 	   74 65 0D 0A 00
+ 00000375 4C 61 73 20 63		CASE6 byte "Las circunferencias son tangentes interiormente", 0dh, 0ah, 0
+	   69 72 63 75 6E
+	   66 65 72 65 6E
+	   63 69 61 73 20
+	   73 6F 6E 20 74
+	   61 6E 67 65 6E
+	   74 65 73 20 69
+	   6E 74 65 72 69
+	   6F 72 6D 65 6E
+	   74 65 0D 0A 00
+ 000003A7 4C 61 73 20 63		CASE7 byte "Las circunferencias son interiores excentricas", 0dh, 0ah, 0
+	   69 72 63 75 6E
+	   66 65 72 65 6E
+	   63 69 61 73 20
+	   73 6F 6E 20 69
+	   6E 74 65 72 69
+	   6F 72 65 73 20
+	   65 78 63 65 6E
+	   74 72 69 63 61
+	   73 0D 0A 00
 					
-
  000003D8 0D 0A 00			SPACE byte 0dh, 0ah, 0
 
  000003DB 00000000			XI real4 0.0			; x circulo1 
@@ -453,234 +452,355 @@ Microsoft (R) Macro Assembler Version 14.28.29334.0	    11/28/20 16:30:13
 
  00000226  83 3D 00000403 R		cmp DISTANCIA, 0		
 	   00
- 0000022D  0F 84 0000026C		jz fin3					; if (DISTANCIA == 0) vaya a fin3 --> Tienen el mismo centro
+ 0000022D  0F 84 00000289		jz fin3					; if (DISTANCIA == 0) vaya a fin3 --> Tienen el mismo centro
 
- 00000233  A1 00000407 R		mov eax, RSUM
- 00000238  39 05 00000403 R		cmp DISTANCIA, eax		
- 0000023E  7F 0D			jg fin1					; if (DISTANCIA > RSUM) vaya a fin1
- 00000240  7C 24			jl fin2					; if (DISTANCIA < RSUM) vaya a fin2
- 00000242  0F 84 00000290		jz fin5					; if (DISTANCIA == RSUM) vaya a fin5
- 00000248  E9 0000028D			jmp fin_code
+ 00000233  A1 0000040B R		mov eax, RSUB
+ 00000238  39 05 00000403 R		cmp DISTANCIA, eax
+ 0000023E  0F 8C 0000042A		jl fin7					; if (DISTANCIA < RSUB) vaya a fin7 INTERIORES EXENTRICOS
+ 00000244  0F 84 0000036C		jz fin6					; if (DISTANCIA == RSUB) vaya a fin6 TANGENCIA INTERIOR
+
+ 0000024A  A1 00000407 R		mov eax, RSUM
+ 0000024F  39 05 00000403 R		cmp DISTANCIA, eax		
+ 00000255  7F 0D			jg fin1					; if (DISTANCIA > RSUM) vaya a fin1 NO SE CORTAN
+ 00000257  7C 24			jl fin2					; if (DISTANCIA < RSUM) vaya a fin2 SECANTE
+ 00000259  0F 84 0000029C		jz fin5					; if (DISTANCIA == RSUM) vaya a fin5 TANGENCIA EXTERIOR
+ 0000025F  E9 0000041E			jmp fin_code
+
 
 					; CASE1 = son exteriores // NO SE INTERSECTAN
-					
- 0000024D				fin1:
- 0000024D  BA 0000028D R			mov edx, offset CASE1
- 00000252  E8 00000000 E			call writestring		; Print CASE1
+ 00000264				fin1:
+ 00000264  BA 0000028D R			mov edx, offset CASE1
+ 00000269  E8 00000000 E			call writestring		; Print CASE1
 						
- 00000257  BA 000003D8 R			mov edx, offset SPACE
- 0000025C  E8 00000000 E			call writestring		; Print \n
- 00000261  E9 00000274				jmp fin_code
+ 0000026E  BA 000003D8 R			mov edx, offset SPACE
+ 00000273  E8 00000000 E			call writestring		; Print \n
+ 00000278  E9 00000405				jmp fin_code
+
 
 					; CASE2 = son secantes
+ 0000027D				fin2:
+ 0000027D  BA 000002B2 R			mov edx, offset CASE2
+ 00000282  E8 00000000 E			call writestring		; Print CASE2
 
- 00000266				fin2:
- 00000266  BA 000002B2 R			mov edx, offset CASE2
- 0000026B  E8 00000000 E			call writestring		; Print CASE2
-
- 00000270  BA 000003D8 R			mov edx, offset SPACE
- 00000275  E8 00000000 E			call writestring		; Print \n
+ 00000287  BA 000003D8 R			mov edx, offset SPACE
+ 0000028C  E8 00000000 E			call writestring		; Print \n
 
 						; Paux = (CIRCULO2 - CIRCULO1)
 						
- 0000027A  9B DB E3				finit
- 0000027D  D9 05 000003E7 R			fld XF
- 00000283  D9 05 000003DB R			fld XI
- 00000289  DE E9				fsub
- 0000028B  D9 1D 00000423 R			fstp XPaux				; XPaux = XF - XI
-
  00000291  9B DB E3				finit
- 00000294  D9 05 000003EB R			fld YF
- 0000029A  D9 05 000003DF R			fld YI
+ 00000294  D9 05 000003E7 R			fld XF
+ 0000029A  D9 05 000003DB R			fld XI
  000002A0  DE E9				fsub
- 000002A2  D9 1D 00000427 R			fstp YPaux				; YPaux = YF - YI
+ 000002A2  D9 1D 00000423 R			fstp XPaux				; XPaux = XF - XI
+
+ 000002A8  9B DB E3				finit
+ 000002AB  D9 05 000003EB R			fld YF
+ 000002B1  D9 05 000003DF R			fld YI
+ 000002B7  DE E9				fsub
+ 000002B9  D9 1D 00000427 R			fstp YPaux				; YPaux = YF - YI
 
 						; Paux *= a/d
- 000002A8  9B DB E3				finit
- 000002AB  D9 05 0000040F R			fld A
- 000002B1  D9 05 00000403 R			fld DISTANCIA
- 000002B7  DE F9				fdiv
- 000002B9  D9 1D 00000417 R			fstp AUX1				; AUX1 = A/D
-
- 000002BF  9B DB E3				finit 
- 000002C2  D9 05 00000423 R			fld XPaux
- 000002C8  D9 05 00000417 R			fld AUX1
- 000002CE  DE C9				fmul
- 000002D0  D9 1D 00000423 R			fstp XPaux				; XPaux *= A/D
+ 000002BF  9B DB E3				finit
+ 000002C2  D9 05 0000040F R			fld A
+ 000002C8  D9 05 00000403 R			fld DISTANCIA
+ 000002CE  DE F9				fdiv
+ 000002D0  D9 1D 00000417 R			fstp AUX1				; AUX1 = A/D
 
  000002D6  9B DB E3				finit 
- 000002D9  D9 05 00000427 R			fld YPaux
+ 000002D9  D9 05 00000423 R			fld XPaux
  000002DF  D9 05 00000417 R			fld AUX1
  000002E5  DE C9				fmul
- 000002E7  D9 1D 00000427 R			fstp YPaux				; YPaux *= A/D
+ 000002E7  D9 1D 00000423 R			fstp XPaux				; XPaux *= A/D
+
+ 000002ED  9B DB E3				finit 
+ 000002F0  D9 05 00000427 R			fld YPaux
+ 000002F6  D9 05 00000417 R			fld AUX1
+ 000002FC  DE C9				fmul
+ 000002FE  D9 1D 00000427 R			fstp YPaux				; YPaux *= A/D
 
 						; Paux += CIRCULO1 
 
- 000002ED  9B DB E3				finit
- 000002F0  D9 05 00000423 R			fld XPaux
- 000002F6  D9 05 000003DB R			fld XI
- 000002FC  DE C1				fadd
- 000002FE  D9 1D 00000423 R			fstp XPaux				; XPaux += XI
-
  00000304  9B DB E3				finit
- 00000307  D9 05 00000427 R			fld YPaux
- 0000030D  D9 05 000003DF R			fld YI
+ 00000307  D9 05 00000423 R			fld XPaux
+ 0000030D  D9 05 000003DB R			fld XI
  00000313  DE C1				fadd
- 00000315  D9 1D 00000427 R			fstp YPaux				; YPaux += YI
+ 00000315  D9 1D 00000423 R			fstp XPaux				; XPaux += XI
+
+ 0000031B  9B DB E3				finit
+ 0000031E  D9 05 00000427 R			fld YPaux
+ 00000324  D9 05 000003DF R			fld YI
+ 0000032A  DE C1				fadd
+ 0000032C  D9 1D 00000427 R			fstp YPaux				; YPaux += YI
 						
 						; XP1 = XPaux + H * (YF - YI) / D;
- 0000031B  9B DB E3				finit
- 0000031E  D9 05 000003EB R			fld YF
- 00000324  D9 05 000003DF R			fld YI
- 0000032A  DE E9				fsub
- 0000032C  D9 05 00000413 R			fld H
- 00000332  DE C9				fmul
- 00000334  D9 05 00000403 R			fld DISTANCIA
- 0000033A  DE F9				fdiv
- 0000033C  D9 05 00000423 R			fld XPaux
- 00000342  DE C1				fadd
- 00000344  D9 1D 000003F3 R			fstp XP1
+ 00000332  9B DB E3				finit
+ 00000335  D9 05 000003EB R			fld YF
+ 0000033B  D9 05 000003DF R			fld YI
+ 00000341  DE E9				fsub
+ 00000343  D9 05 00000413 R			fld H
+ 00000349  DE C9				fmul
+ 0000034B  D9 05 00000403 R			fld DISTANCIA
+ 00000351  DE F9				fdiv
+ 00000353  D9 05 00000423 R			fld XPaux
+ 00000359  DE C1				fadd
+ 0000035B  D9 1D 000003F3 R			fstp XP1
 						
- 0000034A  BA 0000020E R			mov edx, offset MSN_COORDENADAS_SEC1	; mueve a edx la variable MSN_COORDENADAS_SEC
- 0000034F  E8 00000000 E			call writestring						; imprime MSN_COORDENADAS_SEC
+ 00000361  BA 0000020E R			mov edx, offset MSN_COORDENADAS_SEC1	; mueve a edx la variable MSN_COORDENADAS_SEC
+ 00000366  E8 00000000 E			call writestring						; imprime MSN_COORDENADAS_SEC
 						
- 00000354  BA 00000283 R			mov edx, offset PRINT_X					; mueve a edx la variable PRINT_X
- 00000359  E8 00000000 E			call writestring						; imprime PRINT_X
+ 0000036B  BA 00000283 R			mov edx, offset PRINT_X					; mueve a edx la variable PRINT_X
+ 00000370  E8 00000000 E			call writestring						; imprime PRINT_X
 						
- 0000035E  9B DB E3				finit
- 00000361  D9 05 000003F3 R			fld XP1
- 00000367  E8 00000000 E			call writefloat
+ 00000375  9B DB E3				finit
+ 00000378  D9 05 000003F3 R			fld XP1
+ 0000037E  E8 00000000 E			call writefloat
 
- 0000036C  BA 000003D8 R			mov edx, offset SPACE
- 00000371  E8 00000000 E			call writestring		; Print \n
+ 00000383  BA 000003D8 R			mov edx, offset SPACE
+ 00000388  E8 00000000 E			call writestring						; Print \n
 
 						; YP1 = YPaux - H * (XF - XI) / D;
- 00000376  9B DB E3				finit
- 00000379  D9 05 000003E7 R			fld XF
- 0000037F  D9 05 000003DB R			fld XI
- 00000385  DE E9				fsub
- 00000387  D9 E1				fabs
- 00000389  D9 05 00000413 R			fld H
- 0000038F  DE C9				fmul
- 00000391  D9 05 00000403 R			fld DISTANCIA
- 00000397  DE F9				fdiv
- 00000399  D9 1D 00000417 R			fstp AUX1				; AUX1= H * (XF - XI) / D
+ 0000038D  9B DB E3				finit
+ 00000390  D9 05 000003E7 R			fld XF
+ 00000396  D9 05 000003DB R			fld XI
+ 0000039C  DE E9				fsub
+ 0000039E  D9 05 00000413 R			fld H
+ 000003A4  DE C9				fmul
+ 000003A6  D9 05 00000403 R			fld DISTANCIA
+ 000003AC  DE F9				fdiv
+ 000003AE  D9 1D 00000417 R			fstp AUX1								; AUX1= H * (XF - XI) / D
 
- 0000039F  9B DB E3				finit 
- 000003A2  D9 05 00000427 R			fld YPaux
- 000003A8  D9 05 00000417 R			fld AUX1
- 000003AE  DE E9				fsub
- 000003B0  D9 1D 000003F7 R			fstp YP1
+ 000003B4  9B DB E3				finit 
+ 000003B7  D9 05 00000427 R			fld YPaux
+ 000003BD  D9 05 00000417 R			fld AUX1
+ 000003C3  DE E9				fsub
+ 000003C5  D9 1D 000003F7 R			fstp YP1
 						
 						
- 000003B6  BA 00000288 R			mov edx, offset PRINT_Y					; mueve a edx la variable PRINT_Y
- 000003BB  E8 00000000 E			call writestring						; imprime PRINT_Y
+ 000003CB  BA 00000288 R			mov edx, offset PRINT_Y					; mueve a edx la variable PRINT_Y
+ 000003D0  E8 00000000 E			call writestring						; imprime PRINT_Y
 
- 000003C0  9B DB E3				finit
- 000003C3  D9 05 000003F7 R			fld YP1
- 000003C9  E8 00000000 E			call writefloat
+ 000003D5  9B DB E3				finit
+ 000003D8  D9 05 000003F7 R			fld YP1
+ 000003DE  E8 00000000 E			call writefloat
 
- 000003CE  BA 000003D8 R			mov edx, offset SPACE
- 000003D3  E8 00000000 E			call writestring		; Print \n
+ 000003E3  BA 000003D8 R			mov edx, offset SPACE
+ 000003E8  E8 00000000 E			call writestring		; Print \n
 
- 000003D8  BA 000003D8 R			mov edx, offset SPACE
- 000003DD  E8 00000000 E			call writestring		; Print \n
+ 000003ED  BA 000003D8 R			mov edx, offset SPACE
+ 000003F2  E8 00000000 E			call writestring		; Print \n
 
 						; XP2 = XPaux - H * (YF - YI) / D;
- 000003E2  9B DB E3				finit
- 000003E5  D9 05 000003EB R			fld YF
- 000003EB  D9 05 000003DF R			fld YI
- 000003F1  DE E9				fsub
- 000003F3  D9 05 00000413 R			fld H
- 000003F9  DE C9				fmul
- 000003FB  D9 05 00000403 R			fld DISTANCIA
- 00000401  DE F9				fdiv
- 00000403  D9 1D 00000417 R			fstp AUX1
+ 000003F7  9B DB E3				finit
+ 000003FA  D9 05 000003EB R			fld YF
+ 00000400  D9 05 000003DF R			fld YI
+ 00000406  DE E9				fsub
+ 00000408  D9 05 00000413 R			fld H
+ 0000040E  DE C9				fmul
+ 00000410  D9 05 00000403 R			fld DISTANCIA
+ 00000416  DE F9				fdiv
+ 00000418  D9 1D 00000417 R			fstp AUX1
 
- 00000409  9B DB E3				finit
- 0000040C  D9 05 00000423 R			fld XPaux
- 00000412  D9 05 00000417 R			fld AUX1
- 00000418  DE E9				fsub
- 0000041A  D9 1D 000003FB R			fstp XP2
+ 0000041E  9B DB E3				finit
+ 00000421  D9 05 00000423 R			fld XPaux
+ 00000427  D9 05 00000417 R			fld AUX1
+ 0000042D  DE E9				fsub
+ 0000042F  D9 1D 000003FB R			fstp XP2
 						
- 00000420  BA 00000238 R			mov edx, offset MSN_COORDENADAS_SEC2	; mueve a edx la variable MSN_COORDENADAS_SEC
- 00000425  E8 00000000 E			call writestring						; imprime MSN_COORDENADAS_SEC
+ 00000435  BA 00000238 R			mov edx, offset MSN_COORDENADAS_SEC2	; mueve a edx la variable MSN_COORDENADAS_SEC
+ 0000043A  E8 00000000 E			call writestring						; imprime MSN_COORDENADAS_SEC
 								
- 0000042A  BA 00000283 R			mov edx, offset PRINT_X					; mueve a edx la variable PRINT_X
- 0000042F  E8 00000000 E			call writestring						; imprime PRINT_X
+ 0000043F  BA 00000283 R			mov edx, offset PRINT_X					; mueve a edx la variable PRINT_X
+ 00000444  E8 00000000 E			call writestring						; imprime PRINT_X
 						
- 00000434  9B DB E3				finit
- 00000437  D9 05 000003FB R			fld XP2
- 0000043D  E8 00000000 E			call writefloat
+ 00000449  9B DB E3				finit
+ 0000044C  D9 05 000003FB R			fld XP2
+ 00000452  E8 00000000 E			call writefloat
 
- 00000442  BA 000003D8 R			mov edx, offset SPACE
- 00000447  E8 00000000 E			call writestring		; Print \n
+ 00000457  BA 000003D8 R			mov edx, offset SPACE
+ 0000045C  E8 00000000 E			call writestring		; Print \n
 
 						; YP2 = YPaux + H * (XF - XI) / D;
- 0000044C  9B DB E3				finit
- 0000044F  D9 05 000003E7 R			fld XF
- 00000455  D9 05 000003DB R			fld XI
- 0000045B  DE E9				fsub
- 0000045D  D9 05 00000413 R			fld H
- 00000463  DE C9				fmul
- 00000465  D9 05 00000403 R			fld DISTANCIA
- 0000046B  DE F9				fdiv
- 0000046D  D9 05 00000427 R			fld YPaux
- 00000473  DE C1				fadd
- 00000475  D9 1D 000003FF R			fstp YP2
+ 00000461  9B DB E3				finit
+ 00000464  D9 05 000003E7 R			fld XF
+ 0000046A  D9 05 000003DB R			fld XI
+ 00000470  DE E9				fsub
+ 00000472  D9 05 00000413 R			fld H
+ 00000478  DE C9				fmul
+ 0000047A  D9 05 00000403 R			fld DISTANCIA
+ 00000480  DE F9				fdiv
+ 00000482  D9 05 00000427 R			fld YPaux
+ 00000488  DE C1				fadd
+ 0000048A  D9 1D 000003FF R			fstp YP2
 						
- 0000047B  BA 00000288 R			mov edx, offset PRINT_Y					; mueve a edx la variable PRINT_Y
- 00000480  E8 00000000 E			call writestring						; imprime PRINT_Y
+ 00000490  BA 00000288 R			mov edx, offset PRINT_Y					; mueve a edx la variable PRINT_Y
+ 00000495  E8 00000000 E			call writestring						; imprime PRINT_Y
 						
- 00000485  9B DB E3				finit
- 00000488  D9 05 000003FF R			fld YP2
- 0000048E  E8 00000000 E			call writefloat
+ 0000049A  9B DB E3				finit
+ 0000049D  D9 05 000003FF R			fld YP2
+ 000004A3  E8 00000000 E			call writefloat
 
- 00000493  BA 000003D8 R			mov edx, offset SPACE
- 00000498  E8 00000000 E			call writestring		; Print \n
+ 000004A8  BA 000003D8 R			mov edx, offset SPACE
+ 000004AD  E8 00000000 E			call writestring		; Print \n
 					
- 0000049D  EB 3B				jmp fin_code
+ 000004B2  E9 000001CB				jmp fin_code
+
+ 000004B7  E9 000001C6			jmp fin_code
+
 
 					; CASE3 = son interiores concentricas
-
- 0000049F				fin3 :
+ 000004BC				fin3 :
 						
- 0000049F  A1 000003E3 R			mov eax, RI
- 000004A4  39 05 000003EF R			cmp RF, eax
- 000004AA  74 16				jz fin4					; if (RI==RF) vaya a fin4 --> Radios iguales 
+ 000004BC  A1 000003E3 R			mov eax, RI
+ 000004C1  39 05 000003EF R			cmp RF, eax
+ 000004C7  74 19				jz fin4					; if (RI==RF) vaya a fin4 --> Radios iguales 
 
- 000004AC  BA 000002EA R			mov edx, offset CASE3
- 000004B1  E8 00000000 E			call writestring		; Print CASE3
+ 000004C9  BA 000002EA R			mov edx, offset CASE3
+ 000004CE  E8 00000000 E			call writestring		; Print CASE3
 						
- 000004B6  BA 000003D8 R			mov edx, offset SPACE
- 000004BB  E8 00000000 E			call writestring		; Print \n
- 000004C0  EB 18				jmp fin_code
+ 000004D3  BA 000003D8 R			mov edx, offset SPACE
+ 000004D8  E8 00000000 E			call writestring		; Print \n
+ 000004DD  E9 000001A0				jmp fin_code
+
 
 					; CASE4 = son coincidentes
+ 000004E2				fin4:
 
- 000004C2				fin4:
-
- 000004C2  BA 0000031C R			mov edx, offset CASE4
- 000004C7  E8 00000000 E			call writestring		; Print CASE4
+ 000004E2  BA 0000031C R			mov edx, offset CASE4
+ 000004E7  E8 00000000 E			call writestring		; Print CASE4
 						
- 000004CC  BA 000003D8 R			mov edx, offset SPACE
- 000004D1  E8 00000000 E			call writestring		; Print \n
- 000004D6  EB 02				jmp fin_code
+ 000004EC  BA 000003D8 R			mov edx, offset SPACE
+ 000004F1  E8 00000000 E			call writestring		; Print \n
+ 000004F6  E9 00000187				jmp fin_code
 
-					; CASE5 = por definir
 
- 000004D8				fin5:
-						; falta codigo fin5
- 000004D8  EB 00				jmp fin_code
+					; CASE5 byte "Las circunferencias son tangentes exteriormente", 0dh, 0ah, 0
+ 000004FB				fin5:
+						;XP1 = XI+a*(XF-XI)/d
+ 000004FB  9B DB E3				finit
+ 000004FE  D9 05 000003E7 R			fld XF
+ 00000504  D9 05 000003DB R			fld XI
+ 0000050A  DE E9				fsub
+ 0000050C  D9 05 0000040F R			fld A
+ 00000512  DE C9				fmul
+ 00000514  D9 05 00000403 R			fld DISTANCIA
+ 0000051A  DE F9				fdiv
+ 0000051C  D9 05 000003DB R			fld XI
+ 00000522  DE C1				fadd
+ 00000524  D9 1D 000003F3 R			fstp XP1
 
- 000004DA				fin_code:
+						;YP1 = YI+a*(YF-YI)/d
+ 0000052A  9B DB E3				finit
+ 0000052D  D9 05 000003EB R			fld YF
+ 00000533  D9 05 000003DF R			fld YI
+ 00000539  DE E9				fsub
+ 0000053B  D9 05 0000040F R			fld A
+ 00000541  DE C9				fmul
+ 00000543  D9 05 00000403 R			fld DISTANCIA
+ 00000549  DE F9				fdiv
+ 0000054B  D9 05 000003DF R			fld YI
+ 00000551  DE C1				fadd
+ 00000553  D9 1D 000003F7 R			fstp YP1
+
+ 00000559  BA 00000343 R			mov edx, offset CASE5
+ 0000055E  E8 00000000 E			call writestring						; Print CASE5
+						
+ 00000563  BA 00000262 R			mov edx, offset MSN_COORDENADAS_TAN		; mueve a edx la variable tangencial
+ 00000568  E8 00000000 E			call writestring						; imprime
+
+ 0000056D  BA 00000283 R			mov edx, offset PRINT_X					; mueve a edx la variable PRINT_X
+ 00000572  E8 00000000 E			call writestring						; imprime PRINT_X
+						
+ 00000577  9B DB E3				finit
+ 0000057A  D9 05 000003F3 R			fld XP1
+ 00000580  E8 00000000 E			call writefloat
+
+ 00000585  BA 000003D8 R			mov edx, offset SPACE
+ 0000058A  E8 00000000 E			call writestring						; Print \n
+						
+ 0000058F  BA 00000288 R			mov edx, offset PRINT_Y					; mueve a edx la variable PRINT_Y
+ 00000594  E8 00000000 E			call writestring						; imprime PRINT_Y
+						
+ 00000599  9B DB E3				finit
+ 0000059C  D9 05 000003F7 R			fld YP1
+ 000005A2  E8 00000000 E			call writefloat
+
+ 000005A7  BA 000003D8 R			mov edx, offset SPACE
+ 000005AC  E8 00000000 E			call writestring						; Print \n
+
+ 000005B1  E9 000000CC				jmp fin_code
+
+
+					; CASE6 byte "Las circunferencias son tangentes interiormente", 0dh, 0ah, 0
+ 000005B6				fin6:
+						;XP1 = XI+a*(XF-XI)/d
+ 000005B6  9B DB E3				finit
+ 000005B9  D9 05 000003E7 R			fld XF
+ 000005BF  D9 05 000003DB R			fld XI
+ 000005C5  DE E9				fsub
+ 000005C7  D9 05 0000040F R			fld A
+ 000005CD  DE C9				fmul
+ 000005CF  D9 05 00000403 R			fld DISTANCIA
+ 000005D5  DE F9				fdiv
+ 000005D7  D9 05 000003DB R			fld XI
+ 000005DD  DE C1				fadd
+ 000005DF  D9 1D 000003F3 R			fstp XP1
+
+						;YP1 = YI+a*(YF-YI)/d
+ 000005E5  9B DB E3				finit
+ 000005E8  D9 05 000003EB R			fld YF
+ 000005EE  D9 05 000003DF R			fld YI
+ 000005F4  DE E9				fsub
+ 000005F6  D9 05 0000040F R			fld A
+ 000005FC  DE C9				fmul
+ 000005FE  D9 05 00000403 R			fld DISTANCIA
+ 00000604  DE F9				fdiv
+ 00000606  D9 05 000003DF R			fld YI
+ 0000060C  DE C1				fadd
+ 0000060E  D9 1D 000003F7 R			fstp YP1
+
+ 00000614  BA 00000375 R			mov edx, offset CASE6
+ 00000619  E8 00000000 E			call writestring						; Print CASE6
+						
+ 0000061E  BA 00000262 R			mov edx, offset MSN_COORDENADAS_TAN		; mueve a edx la variable tangencial
+ 00000623  E8 00000000 E			call writestring						; imprime 
+						
+ 00000628  BA 00000283 R			mov edx, offset PRINT_X					; mueve a edx la variable PRINT_X
+ 0000062D  E8 00000000 E			call writestring						; imprime PRINT_X
+						
+ 00000632  9B DB E3				finit
+ 00000635  D9 05 000003F3 R			fld XP1
+ 0000063B  E8 00000000 E			call writefloat
+
+ 00000640  BA 000003D8 R			mov edx, offset SPACE
+ 00000645  E8 00000000 E			call writestring						; Print \n
+						
+ 0000064A  BA 00000288 R			mov edx, offset PRINT_Y					; mueve a edx la variable PRINT_Y
+ 0000064F  E8 00000000 E			call writestring						; imprime PRINT_Y
+						
+ 00000654  9B DB E3				finit
+ 00000657  D9 05 000003F7 R			fld YP1
+ 0000065D  E8 00000000 E			call writefloat
+
+ 00000662  BA 000003D8 R			mov edx, offset SPACE
+ 00000667  E8 00000000 E			call writestring						; Print \n
+
+ 0000066C  EB 14				jmp fin_code
+
+					; CASE7 = INTERIORES EXCENTRICOS
+ 0000066E				fin7:
+ 0000066E  BA 000003A7 R			mov edx, offset CASE7
+ 00000673  E8 00000000 E			call writestring		; Print CASE7
+						
+ 00000678  BA 000003D8 R			mov edx, offset SPACE
+ 0000067D  E8 00000000 E			call writestring		; Print \n
+ 00000682				fin_code:
 
 					exit
- 000004DA  6A 00	   *	    push   +000000000h
- 000004DC  E8 00000000 E   *	    call   ExitProcess
- 000004E1			main ENDP
+ 00000682  6A 00	   *	    push   +000000000h
+ 00000684  E8 00000000 E   *	    call   ExitProcess
+ 00000689			main ENDP
 				END main
-Microsoft (R) Macro Assembler Version 14.28.29334.0	    11/28/20 16:30:13
+Microsoft (R) Macro Assembler Version 14.28.29333.0	    11/28/20 17:14:54
 <ChavarriaLopezMoreno-Arquitectura2020II         (practica.a  Symbols 2 - 1
 
 
@@ -775,7 +895,7 @@ Segments and Groups:
 FLAT . . . . . . . . . . . . . .	GROUP
 STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
 _DATA  . . . . . . . . . . . . .	32 Bit	 0000042B Para	  Public  'DATA'	
-_TEXT  . . . . . . . . . . . . .	32 Bit	 000004E1 Para	  Public  'CODE'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000689 Para	  Public  'CODE'	
 
 
 Procedures, parameters, and locals:
@@ -882,13 +1002,15 @@ WriteStackFrame  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 WriteString  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteToFile  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteWindowsMsg  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 000004E1 Public STDCALL
-  fin1 . . . . . . . . . . . . .	L Near	 0000024D _TEXT	
-  fin2 . . . . . . . . . . . . .	L Near	 00000266 _TEXT	
-  fin3 . . . . . . . . . . . . .	L Near	 0000049F _TEXT	
-  fin4 . . . . . . . . . . . . .	L Near	 000004C2 _TEXT	
-  fin5 . . . . . . . . . . . . .	L Near	 000004D8 _TEXT	
-  fin_code . . . . . . . . . . .	L Near	 000004DA _TEXT	
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000689 Public STDCALL
+  fin1 . . . . . . . . . . . . .	L Near	 00000264 _TEXT	
+  fin2 . . . . . . . . . . . . .	L Near	 0000027D _TEXT	
+  fin3 . . . . . . . . . . . . .	L Near	 000004BC _TEXT	
+  fin4 . . . . . . . . . . . . .	L Near	 000004E2 _TEXT	
+  fin5 . . . . . . . . . . . . .	L Near	 000004FB _TEXT	
+  fin6 . . . . . . . . . . . . .	L Near	 000005B6 _TEXT	
+  fin7 . . . . . . . . . . . . .	L Near	 0000066E _TEXT	
+  fin_code . . . . . . . . . . .	L Near	 00000682 _TEXT	
 printf . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 scanf  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 wsprintfA  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
@@ -918,8 +1040,8 @@ CASE2  . . . . . . . . . . . . .	Byte	 000002B2 _DATA
 CASE3  . . . . . . . . . . . . .	Byte	 000002EA _DATA	
 CASE4  . . . . . . . . . . . . .	Byte	 0000031C _DATA	
 CASE5  . . . . . . . . . . . . .	Byte	 00000343 _DATA	
-CASE6  . . . . . . . . . . . . .	Byte	 00000374 _DATA	
-CASE7  . . . . . . . . . . . . .	Byte	 000003A6 _DATA	
+CASE6  . . . . . . . . . . . . .	Byte	 00000375 _DATA	
+CASE7  . . . . . . . . . . . . .	Byte	 000003A7 _DATA	
 CREATE_ALWAYS  . . . . . . . . .	Number	 00000002h   
 CREATE_NEW . . . . . . . . . . .	Number	 00000001h   
 CTRL_MASK  . . . . . . . . . . .	Number	 0000000Ch   
