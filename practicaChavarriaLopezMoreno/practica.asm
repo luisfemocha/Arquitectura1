@@ -7,20 +7,23 @@ TITLE ChavarriaLopezMoreno-Arquitectura2020II         (practica.asm)
 INCLUDE Irvine32.inc
 
 .data
+	MSN_SALUDO byte "Saludos.", 0dh,0ah,
+	"Este proyecto ha sido realizado por: Luis Felipe Moreno Chamorro - Diego Andres Chavarria Riano - Jose Fernando Lopez Ramirez.", 0dh,0ah,
+	"Asignatura: Arquitectura del computador.", 0dh,0ah,
+	"Semestre: 2020-2s.",0dh,0ah,0
+	
+	MSN_OBJETIVO byte "El objetivo de este programa es clasificar las circunferencias a partir de unos datos (coordenadas y radio de dos circulos)", 0dh,0ah,
+	"solicitadas al usuario. En caso de corresponder a un circulo secante o tangente se mostraran sus dos puntos secantes o su punto de tangencia.",0dh,0ah,0dh,0ah,0
 
-	MSN_SALUDO byte "Hola", 0dh,0ah,
-	"Este proyecto ha sido realizado por: Luis Felipe Moreno Chamorro - Diego Andres Chavarria Riano - Jose Fernando Lopez Ramirez", 0dh,0ah,
-		"Asignatura: Arquitectura del computador", 0dh,0ah,
-		"Semestre: 2020-2s",0dh,0ah,
-		"El objetivo de este programa es clasificar las circunferencias a partir de unos datos (coordenadas) solicitadas al usuario, que en caso de corresponder a determinada clasificacion se daran valores eetra para esta",0dh,0ah,
-		0dh,0ah, 0dh,0ah,0
+	MSN_DESPEDIDA byte "Fin compilacion, tenga un buen dia.", 0dh,0ah, 0dh,0ah,0
 
-	MSN1 byte "ingrese Valor XI", 0dh, 0ah, 0
-	MSN2 byte "ingrese Valor YI", 0dh, 0ah, 0
-	MSN3 byte "ingrese Valor RI", 0dh, 0ah, 0
-	MSN4 byte "ingrese Valor XF", 0dh, 0ah, 0
-	MSN5 byte "ingrese Valor YF", 0dh, 0ah, 0
-	MSN6 byte "ingrese Valor RF", 0dh, 0ah, 0
+	MSN1 byte "Ingrese por favor:", 0dh, 0ah,
+	"Coordenada X del centro del circulo 1: ", 0
+	MSN2 byte "Coordenada Y del centro del circulo 1: ", 0
+	MSN3 byte "Radio del circulo 1: ", 0
+	MSN4 byte "Coordenada X del centro del circulo 2: ", 0
+	MSN5 byte "Coordenada Y del centro del circulo 2: ", 0
+	MSN6 byte "Radio del circulo 2: ", 0
 
 	MSN_COORDENADAS_SEC1 byte "Coordenadas de puntos de interseccion 1", 0dh, 0ah, 0
 	MSN_COORDENADAS_SEC2 byte "Coordenadas de puntos de interseccion 2", 0dh, 0ah, 0
@@ -35,6 +38,8 @@ INCLUDE Irvine32.inc
 	CASE5 byte "Las circunferencias son tangentes exteriormente", 0dh, 0ah, 0
 	CASE6 byte "Las circunferencias son tangentes interiormente", 0dh, 0ah, 0
 	CASE7 byte "Las circunferencias son interiores excentricas", 0dh, 0ah, 0
+
+	CASEERROR byte "Error. No puede ingresar radios negativos.", 0dh, 0ah, 0
 	
 	SPACE byte 0dh, 0ah, 0
 
@@ -64,11 +69,11 @@ INCLUDE Irvine32.inc
 	XPaux real4 ?
 	YPaux real4 ?
 	
-
 .code
 main PROC
-
 	mov edx, offset MSN_SALUDO
+	call writestring
+	mov edx, offset MSN_OBJETIVO
 	call writestring
 
 	; LECTURA DE VARIABLES INICIALES
@@ -110,8 +115,13 @@ main PROC
 
 	call Readfloat			; leer desde el teclado y guardarlo en el reg ST(0)
 	fstp RF					; mover eax a la variale RF
+	
+	; COMPROBACION RADIOS NO NEGATIVOS.
+	cmp RI, 0
+	jl fin8
+	cmp RF, 0
+	jl fin8
 
-		
 	; CALCULAR DISTANCIA
 	
 	finit
@@ -223,7 +233,6 @@ main PROC
 	fstp A					; A= ( RI^2 - RF^2 + D^2 ) / 2D
 
 	; CALCULO DE H= sqrt(r*r - a*a)
-
 	finit
 	fld RI
 	fld RI
@@ -245,7 +254,6 @@ main PROC
 	fstp H					; H = sqrt( RI^2 - A^2 )
 
 	; INICIO DE CONDICIONALES
-
 	cmp DISTANCIA, 0		
 	jz fin3					; if (DISTANCIA == 0) vaya a fin3 --> Tienen el mismo centro
 
@@ -261,9 +269,7 @@ main PROC
 	jz fin5					; if (DISTANCIA == RSUM) vaya a fin5 TANGENCIA EXTERIOR
 	jmp fin_code
 
-
-	; CASE1 = son exteriores // NO SE INTERSECTAN
-	fin1:
+	fin1:   ; CASE1 = son exteriores // NO SE INTERSECTAN
 		mov edx, offset CASE1
 		call writestring		; Print CASE1
 		
@@ -271,9 +277,7 @@ main PROC
 		call writestring		; Print \n
 		jmp fin_code
 
-
-	; CASE2 = son secantes
-	fin2:
+	fin2:   ; CASE2 = son secantes
 		mov edx, offset CASE2
 		call writestring		; Print CASE2
 
@@ -281,7 +285,6 @@ main PROC
 		call writestring		; Print \n
 
 		; Paux = (CIRCULO2 - CIRCULO1)
-		
 		finit
 		fld XF
 		fld XI
@@ -314,7 +317,6 @@ main PROC
 		fstp YPaux				; YPaux *= A/D
 
 		; Paux += CIRCULO1 
-
 		finit
 		fld XPaux
 		fld XI
@@ -369,7 +371,6 @@ main PROC
 		fld AUX1
 		fsub
 		fstp YP1
-		
 		
 		mov edx, offset PRINT_Y					; mueve a edx la variable PRINT_Y
 		call writestring						; imprime PRINT_Y
@@ -436,15 +437,15 @@ main PROC
 
 		mov edx, offset SPACE
 		call writestring		; Print \n
+
+		mov edx, offset SPACE
+		call writestring		; Print \n
 	
 		jmp fin_code
 
 	jmp fin_code
 
-
-	; CASE3 = son interiores concentricas
-	fin3 :
-		
+	fin3 :  ; CASE3 = son interiores concentricas
 		mov eax, RI
 		cmp RF, eax
 		jz fin4					; if (RI==RF) vaya a fin4 --> Radios iguales 
@@ -456,10 +457,7 @@ main PROC
 		call writestring		; Print \n
 		jmp fin_code
 
-
-	; CASE4 = son coincidentes
-	fin4:
-
+	fin4:  ; CASE4 = son coincidentes
 		mov edx, offset CASE4
 		call writestring		; Print CASE4
 		
@@ -467,11 +465,8 @@ main PROC
 		call writestring		; Print \n
 		jmp fin_code
 
-
-	; CASE5 byte "Las circunferencias son tangentes exteriormente", 0dh, 0ah, 0
-	fin5:
+	fin5:  ; CASE5 byte "Las circunferencias son tangentes exteriormente", 0dh, 0ah, 0
 		;XP1 = XI+a*(XF-XI)/d
-
 		finit
 		fld XF
 		fld XI
@@ -485,7 +480,6 @@ main PROC
 		fstp XP1
 
 		;YP1 = YI+a*(YF-YI)/d
-
 		finit
 		fld YF
 		fld YI
@@ -526,11 +520,8 @@ main PROC
 
 		jmp fin_code
 
-
-	; CASE6 byte "Las circunferencias son tangentes interiormente", 0dh, 0ah, 0
-	fin6:
+	fin6:  ; CASE6 byte "Las circunferencias son tangentes interiormente", 0dh, 0ah, 0
 		;XP1 = XI+a*(XF-XI)/d
-
 		finit
 		fld XF
 		fld XI
@@ -544,7 +535,6 @@ main PROC
 		fstp XP1
 
 		;YP1 = YI+a*(YF-YI)/d
-
 		finit
 		fld YF
 		fld YI
@@ -585,15 +575,25 @@ main PROC
 
 		jmp fin_code
 
-
-	; CASE7 = INTERIORES EXCENTRICOS
-	fin7:
+	fin7: ; CASE7 = INTERIORES EXCENTRICOS
 		mov edx, offset CASE7
 		call writestring		; Print CASE7
 		
 		mov edx, offset SPACE
 		call writestring		; Print \n
+
+		jmp fin_code
+
+	fin8: ; CASEERROR byte "Error. No puede ingresar radios negativos.", 0dh, 0ah, 0
+		mov edx, offset CASEERROR
+		call writestring		; Print ERROR
+		
+		mov edx, offset SPACE
+		call writestring		; Print \n
+
 	fin_code:
+		mov edx, offset MSN_DESPEDIDA
+		call writestring
 
 	exit
 main ENDP
