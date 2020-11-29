@@ -1,21 +1,19 @@
 TITLE ChavarriaLopezMoreno-Arquitectura2020II         (practica.asm)
 
-; Realizado por: Luis Felipe Moreno Chamorro - Diego AndrÈs ChavarrÌa RiaÒo - Jose Fernando Lopez RamÌrez
+; Realizado por: Luis Felipe Moreno Chamorro - Diego Andr√©s Chavarr√≠a Ria√±o - Jose Fernando Lopez Ram√≠rez
 ; Asignatura: Arquitectura del computador
 ; Semestre: 2020-2s
 
 INCLUDE Irvine32.inc
 
 .data
+	MSN_DESPEDIDA byte "Fin compilacion, tenga un buen dia.", 0dh,0ah, 0dh,0ah,0
 	MSN_SALUDO byte "Saludos.", 0dh,0ah,
 	"Este proyecto ha sido realizado por: Luis Felipe Moreno Chamorro - Diego Andres Chavarria Riano - Jose Fernando Lopez Ramirez.", 0dh,0ah,
-	"Asignatura: Arquitectura del computador.", 0dh,0ah,
-	"Semestre: 2020-2s.",0dh,0ah,0
-	
-	MSN_OBJETIVO byte "El objetivo de este programa es clasificar las circunferencias a partir de unos datos (coordenadas y radio de dos circulos)", 0dh,0ah,
-	"solicitadas al usuario. En caso de corresponder a un circulo secante o tangente se mostraran sus dos puntos secantes o su punto de tangencia.",0dh,0ah,0dh,0ah,0
-
-	MSN_DESPEDIDA byte "Fin compilacion, tenga un buen dia.", 0dh,0ah, 0dh,0ah,0
+		"Asignatura: Arquitectura del computador.", 0dh,0ah,
+		"Semestre: 2020-2s.",0dh,0ah,
+		"El objetivo de este programa es clasificar las circunferencias a partir de unos datos (coordenadas) solicitadas al usuario, que en caso de corresponder a determinada clasificaci√≥n se dar√°n valores extra para esta.",0dh,0ah,
+		0dh,0ah, 0dh,0ah,0
 
 	MSN1 byte "Ingrese por favor:", 0dh, 0ah,
 	"Coordenada X del centro del circulo 1: ", 0
@@ -60,8 +58,8 @@ INCLUDE Irvine32.inc
 	RSUM real4 ?			; suma de radios
 	RSUB real4 ?			; resta de radios
 
-	A real4 ?				;
-	H real4 ?				;
+	A real4 ?
+	H real4 ?
 
 	AUX1 real4 ?
 	AUX2 real4 ?
@@ -575,7 +573,8 @@ main PROC
 
 		jmp fin_code
 
-	fin7: ; CASE7 = INTERIORES EXCENTRICOS
+	; CASE7 = INTERIORES EXCENTRICOS
+	fin7: 
 		mov edx, offset CASE7
 		call writestring		; Print CASE7
 		
@@ -584,7 +583,8 @@ main PROC
 
 		jmp fin_code
 
-	fin8: ; CASEERROR byte "Error. No puede ingresar radios negativos.", 0dh, 0ah, 0
+	; CASEERROR byte "Error. No puede ingresar radios negativos.", 0dh, 0ah, 0
+	fin8: 
 		mov edx, offset CASEERROR
 		call writestring		; Print ERROR
 		
