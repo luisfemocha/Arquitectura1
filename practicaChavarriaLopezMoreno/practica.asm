@@ -10,10 +10,10 @@ INCLUDE Irvine32.inc
 	MSN_DESPEDIDA byte "Fin compilacion, tenga un buen dia.", 0dh,0ah, 0dh,0ah,0
 	MSN_SALUDO byte "Saludos.", 0dh,0ah,
 	"Este proyecto ha sido realizado por: Luis Felipe Moreno Chamorro - Diego Andres Chavarria Riano - Jose Fernando Lopez Ramirez.", 0dh,0ah,
-		"Asignatura: Arquitectura del computador.", 0dh,0ah,
-		"Semestre: 2020-2s.",0dh,0ah,
-		"El objetivo de este programa es clasificar las circunferencias a partir de unos datos (coordenadas) solicitadas al usuario, que en caso de corresponder a determinada clasificación se darán valores extra para esta.",0dh,0ah,
-		0dh,0ah, 0dh,0ah,0
+	"Asignatura: Arquitectura del computador.", 0dh,0ah,
+	"Semestre: 2020-2s.",0dh,0ah,0
+	MSN_OBJETIVO byte "El objetivo de este programa es clasificar las circunferencias a partir de unos datos (coordenadas) solicitadas al usuario, que en caso de corresponder a determinada clasificacion se daran valores extra para esta.",0dh,0ah,
+	0dh,0ah,0
 
 	MSN1 byte "Ingrese por favor:", 0dh, 0ah,
 	"Coordenada X del centro del circulo 1: ", 0
